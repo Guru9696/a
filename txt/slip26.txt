@@ -1,0 +1,294 @@
+Q.1	Write a Java Program to implement Strategy Pattern for Duck Behavior. Create instance variable that holds current state of Duck from there, we just need to handle all Flying Behaviors and Quack Behavior.	[20 M]
+
+
+ abstract class Duck {
+  FlyBehaviour flyBehaviour;
+  QuackBehaviour quackBehaviour;
+  public Duck() {
+  }
+
+  public abstract void display();
+
+  public void performFly() {
+    flyBehaviour.fly();
+  }
+
+  public void performQuack() {
+    quackBehaviour.quack();
+  }
+  public void swim() {
+    System.out.println("All ducks float, even decoys!");
+  }
+  public void setFlyBehaviour(FlyBehaviour fb) {
+    flyBehaviour = fb;
+  }
+  public void setQuackBehaviour(QuackBehaviour qb) {
+    quackBehaviour =  qb;
+  }
+}
+
+
+ class MallardDuck extends Duck {
+
+  public MallardDuck() {
+    quackBehaviour = new Quack();
+    flyBehaviour = new FlyWithWings();
+  }
+
+  public void display() {
+    System.out.println("I'm a real Mallard duck");
+  }
+}
+
+ class ModolDuck extends Duck {
+  // public ModelDuck() {
+     public ModolDuck() {
+    flyBehaviour = new FlyNoWay();
+    quackBehaviour = new Quack();
+  }
+
+  public void display() {
+    System.out.println("I'm a model duck");
+  }
+}
+
+
+ interface FlyBehaviour {
+  public void fly();
+}
+
+
+ class FlyWithWings implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I'm flying!!");
+  }
+}
+
+
+ class FlyNoWay implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I can't fly");
+  }
+}
+
+
+class FlyRocketPowered implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I'm flying with a rocket!");
+  }
+}
+
+
+ interface QuackBehaviour {
+  // public void quack() {
+  public void quack() ;
+}
+
+
+ class Quack implements QuackBehaviour {
+  public void quack() {
+    System.out.println("Quack");
+  }
+}
+
+
+ class MuteQuack implements QuackBehaviour {
+  public void quack() {
+    System.out.println("<< Silence >>");
+  }
+}
+
+
+ class Squeak implements QuackBehaviour {
+  public void quack() {
+    System.out.println("Squeak");
+  }
+}
+
+// MiniDuckSimulator.Java
+// public class slip10 {
+//   public static void main(String[] args) {
+//     Duck mallard = new MallardDuck();
+//     mallard.performQuack();
+//     mallard.performFly();
+//   }
+// }
+
+public class slip10_26 {
+  public static void main(String[] args) {
+    Duck mallard = new MallardDuck();
+    mallard.performQuack();
+    mallard.performFly();
+    // Duck model = new ModelDuck();
+    Duck model = new ModolDuck();
+    model.performFly();
+    model.setFlyBehaviour(new FlyRocketPowered());
+    model.performFly();
+  }
+}
+
+
+Q.2.	Write a python program to implement Multiple Linear Regression for given dataset.[20 M]
+
+***sir code ***
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+ps=pd.read_csv("Housing.csv")
+ps.sample(10)
+
+df = ps[['area','bedrooms','bathrooms','stories','price']]
+df.sample(5)
+
+model=linear_model.LinearRegression()
+model.fit(df.drop('price',axis='columns'),df.price)
+
+model.predict([[7400,3,2,4]])
+
+***my code***
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+  
+dataset = pd.read_csv('Salary_Data.csv')
+dataset.head()
+ 
+# data preprocessing
+X = dataset.iloc[:, :-1].values  #independent variable array
+y = dataset.iloc[:,1].values  #dependent variable vector
+ 
+# splitting the dataset
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=1/3,random_state=0)
+ 
+# fitting the regression model
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train,y_train) #actually produces the linear eqn for the data
+ 
+# predicting the test set results
+y_pred = regressor.predict(X_test) 
+y_pred
+ 
+y_test
+ 
+# visualizing the results
+#plot for the TRAIN
+  
+plt.scatter(X_train, y_train, color='red') # plotting the observation line
+plt.plot(X_train, regressor.predict(X_train), color='blue') # plotting the regression line
+plt.title("Salary vs Experience (Training set)") # stating the title of the graph
+  
+plt.xlabel("Years of experience") # adding the name of x-axis
+plt.ylabel("Salaries") # adding the name of y-axis
+plt.show() # specifies end of graph
+ 
+#plot for the TEST
+  
+plt.scatter(X_test, y_test, color='red') 
+plt.plot(X_train, regressor.predict(X_train), color='blue') # plotting the regression line
+plt.title("Salary vs Experience (Testing set)")
+  
+plt.xlabel("Years of experience") 
+plt.ylabel("Salaries") 
+plt.show() 
+
+
+Q.3	Create a Node.js file that demonstrates create database and table in MySQL.
+[20 M]
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+    host: "localhost",
+
+    user: "root",
+  
+    //password: "", /*pc xampp database or localhost*/
+   //password: "Gaurav@123", /* pc commond line mysql or localhost*/
+   password: "raj@123", /* mobile xampp or local host*/
+});
+
+// use the  query to connect a localhost
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to localhost!");
+ 
+  });
+
+
+ // use the query to create a Database.
+  let databaseName = "lab_pro";
+  
+  let createQuery = `CREATE DATABASE ${databaseName}`;
+
+ 
+  con.query(createQuery, (err) => {
+      if(err==1) throw  "Couldn't create";
+
+      console.log(databaseName+" Database Created Successfully !");
+  // use the query to Use a Database.
+      let useQuery = `USE ${databaseName}`;
+      con.query(useQuery, (error) => {
+          if(error) throw error;
+
+          console.log("Using Database"+databaseName);
+        })
+  // Create a new Table
+    let TableName = "student";
+    let table_query = `CREATE TABLE ${TableName} (name VARCHAR(255), address VARCHAR(255))`;
+  
+    con.query(table_query, (err) => {
+      if(err==1) throw "Couldn't create";
+      console.log(TableName+" Table created");
+    });
+
+//Insert Data in Table
+
+  let Insert_query = `INSERT INTO ${TableName} (name, address) VALUES ?;`;
+  
+// multiple Values to be inserted
+    let values = [
+        ['Amit', 'Yellow Park'],
+        ['Rishi', 'Park 38'],
+        ['Akash', 'Central st 954'],
+        ['Pratik', 'Road 989'],
+        ['Mangesh', 'Sideway']
+    ];
+  
+  // Executing the query show row are inserted in the table
+    con.query(Insert_query, [values], (err) => {
+    
+        if (err==1) throw "Couldn't create";
+        console.log("All Rows Inserted");
+    });
+
+//select query to show table data
+    let show_student = `SELECT * FROM ${TableName}`
+    con.query(show_student, function (err, result, fields) {
+
+        if (err) throw err;
+    
+        console.log(result);
+    
+      });
+
+//Executing the query to delete specific row rows
+    let D_query = `DELETE FROM student WHERE name = ?`;
+
+   let name = 'Amit';
+  
+    con.query(D_query,name,(err, rows) => {
+         if(err==1) throw "Couldn't delete";
+  
+        console.log('Number of rows deleted = ' + rows.affectedRows);
+    });
+// Executing the query to delete all row rows
+   let delete_query1 = `DELETE FROM ${TableName}`;
+   con.query(delete_query1,(err, rows) =>{
+            if (err) throw err;
+            console.log("All Records deleted = "+ rows.affectedRows);
+        });
+
+  });
+

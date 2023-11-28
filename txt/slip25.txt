@@ -1,0 +1,147 @@
+
+Q.1 Write a Java Program to implement Singleton pattern for multithreading	[20 M]
+
+public class slip2_25
+{
+public static void main(String s[])
+
+{
+ABC obj1 = ABC.getInstance();
+ABC obj2 = ABC.getInstance();
+obj1.showMessage();
+}
+}
+class ABC
+{
+static ABC obj = new ABC();
+String name = "Gaurav";
+private ABC() {}
+
+public static ABC getInstance()
+{
+
+return obj;
+
+}
+public void showMessage()
+   {
+      System.out.println("Hello "+name+" !!!!! ");
+   }
+}
+
+
+Q.2. Write a python program to Implement Simple Linear Regression for predicting house price.	[20 M]
+
+*** sir code ***
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+ps=pd.read_csv("Housing.csv")
+df = ps[['area', 'price']]
+df.sample(5)
+
+plt.scatter(df.area,df.price,color='red',marker='+')
+
+In_v=df.drop('price',axis='columns')
+In_v
+
+model=linear_model.LinearRegression()
+model.fit(In_v,df.price)
+
+model.predict([[6720]])
+
+
+***my code ***
+
+  import numpy as np
+    import pandas as pd
+    
+    # Visualisation Libraries
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    
+    # Data Processing Libraries
+    from sklearn.feature_selection import SelectKBest
+    from sklearn.feature_selection import chi2
+    from sklearn import model_selection
+    from sklearn.metrics import mean_squared_error, r2_score
+    
+    # Algorithm Libraries
+    from sklearn.ensemble import ExtraTreesClassifier
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    from sklearn.tree import DecisionTreeRegressor
+    from sklearn.ensemble import RandomForestRegressor
+    
+    # Math Library
+    import math
+    
+    # Importing Dataset
+    df = pd.read_csv("HousingData.xls")
+    
+    # Printing Dataset
+    df.head()   
+
+       
+    # Calculating the mean, minimum, deviation, maximum and other factors
+    df.describe()
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['RM'], bins = 35)
+    plt.title("Average number of rooms Distribution ")
+    plt.xlabel("RM")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['LSTAT'], bins = 35)
+    plt.title("Homeowners distribution with low class")
+    plt.xlabel("LSTAT")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['PTRATIO'], bins = 35)
+    plt.title("Students to Teachers ratio distribution")
+    plt.xlabel("PTRATIO")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['AGE'], bins = 35)
+    plt.title("Ages of Black Owned Portion in the town")
+    plt.xlabel("AGE")
+    plt.ylabel("B")
+    plt.show()
+    
+    N = 506
+    x = df.AGE
+    y = df.B
+    colors = np.random.rand(N)
+
+    plt.scatter(x, y, c=colors)
+    plt.title("scatter")
+    plt.show()
+    
+    plt.title("hitmap")
+    sns.heatmap(df.isnull(),yticklabels=False,cbar=False,cmap='Blues')
+
+
+Q.3	Create a Simple Web Server using node js.	[20 M]
+
+var http = require('http'); 
+
+var server = http.createServer(function (req, res) {  
+
+res.write("<h1 style='background-color:green'>create server successfully</h1>");
+res.end();
+
+});
+
+server.listen(8002); 
+console.log('Node.js web server at port 8002 is running..')

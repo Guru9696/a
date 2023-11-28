@@ -1,0 +1,152 @@
+
+Q.3	Create a clone of the “Hacker News” website.	[20 M]
+***my code***
+
+root folder is assi1 in 2 folders
+1) assi1
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+
+
+urlpatterns = [
+    path('', index, name='index'),
+
+]
+
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+
+
+views.py
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .top
+        {
+            background: #2705bd;
+            padding: 30px 30px 10px 30px;
+        }
+       .top_name1{
+            color: aliceblue;
+            text-decoration: none;
+            text-align: center;
+            align-items: center;
+            padding-left: 10%;
+        }
+        .top_name2{
+            color: aliceblue;
+            text-decoration: none;
+            text-align: center;
+            align-items: center;
+            padding-left: 50%;
+        }
+        .logo{
+     
+            
+            
+        }
+        h1{
+            margin: 0%;
+            color: white;
+            background: #413fb4;
+            font-size: 50px;
+            text-decoration: none;
+            padding-left: 9%;
+            font-weight: bold;
+      
+        }
+        h3{
+            background: #413fb4;
+            width: 18%;
+            color: rgb(12, 8, 8);
+            margin-left: 70%;
+            transform: translateY(-50px);
+            background-color: yellow;
+            border: 1px solid black;
+            border-radius: 5px;
+            
+            
+        }
+        nav{
+            transform: translateY(-40px);
+            padding-left: 80px;
+        }
+        nav a{
+            text-decoration: none;
+            color: black;
+            font-size: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            padding-left: 30px;
+        }
+        .data{
+            margin-left: 20px;
+            margin-right: 20px;
+            background-color: burlywood;
+            
+        }
+     
+    </style>
+</head>
+<body>
+    <div class="top" >
+
+        <a href="#" class="top_name1">#1 Trusted Cybersecurity News Platform </a>
+        <a href="#" class="top_name2">Followed by 4.50+ million</a>
+    </div>
+    <div class="logo" >
+
+       <h1>The Hacker News </h1>
+        <h3>Get the free Newsteller</h3>
+    </div>
+    <nav>
+        <a href="">Home</a>
+        <a href="">Data Branches</a>
+        <a href="">Cyber Attack</a>
+        <a href="">Vulneabrities</a>
+        <a href="">Webinar</a>
+        <a href="">Store</a>
+        <a href="">Contact</a>
+        
+    </nav>
+    <div class="data">
+        <img src="" alt="">
+        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, earum praesentium! Voluptatum, eaque ducimus?</h4>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ullam odit ipsum accusantium reprehenderit aperiam illo asperiores odio, dicta adipisci perspiciatis alias possimus sit eius.</p>
+    </div>
+</body>
+</html>

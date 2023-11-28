@@ -1,0 +1,218 @@
+Q.1	Write a Java Program to implement command pattern to test Remote Control
+[20 M]
+// Command interface
+interface Command {
+    void execute();
+}
+
+// Concrete Command
+class LightOnCommand implements Command {
+    private Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+
+    public void execute() {
+        light.turnOn();
+    }
+}
+
+// Receiver
+class Light {
+    public void turnOn() {
+        System.out.println("Light is ON");
+    }
+
+    public void turnOff() {
+        System.out.println("Light is OFF");
+    }
+}
+
+// Concrete Command
+class TVOnCommand implements Command {
+    private TV tv;
+
+    public TVOnCommand(TV tv) {
+        this.tv = tv;
+    }
+
+    public void execute() {
+        tv.turnOn();
+    }
+}
+
+// Receiver
+class TV {
+    public void turnOn() {
+        System.out.println("TV is ON");
+    }
+
+    public void turnOff() {
+        System.out.println("TV is OFF");
+    }
+}
+
+// Remote Control
+class RemoteControl {
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+    }
+}
+
+public class slip6_21 {
+    public static void main(String[] args) {
+        // Create the receivers
+        Light livingRoomLight = new Light();
+        TV livingRoomTV = new TV();
+
+        // Create the concrete commands
+        Command lightOnCommand = new LightOnCommand(livingRoomLight);
+        Command tvOnCommand = new TVOnCommand(livingRoomTV);
+
+        // Create the remote control
+        RemoteControl remote = new RemoteControl();
+
+        // Set the commands for the remote control
+        remote.setCommand(lightOnCommand);
+        remote.pressButton(); // Turns on the light
+
+        remote.setCommand(tvOnCommand);
+        remote.pressButton(); // Turns on the TV
+    }
+}
+
+
+
+Q.2	Write a python program to implement Polynomial Linear Regression for given dataset
+[20 M]
+***sir code***
+import pandas as pd
+import matplotlib .pyplot as plt
+
+df= pd.read_csv('Salary.csv')
+df
+
+plt.scatter(df['YearsExperience'],df['Salary'])
+
+x= df.iloc[:,1:-1].values
+y= df.iloc[:,-1].values
+X
+
+y
+
+from sklearn.preprocessing import PolynomialFeatures
+poly =PolynomialFeatures(degree=3)
+x_poly = poly.fit_transform(x)
+x_poly
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(x_poly,y)
+
+plt.scatter(x,y)
+plt.plot(x,model.predict(poly.fit_transform(x)))
+
+model.predict(poly.fit_transform([[6]]))
+
+***my code***
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+  
+dataset = pd.read_csv('Position_Salaries.csv')
+dataset
+ 
+X = dataset.iloc[:,1:2].values  
+y = dataset.iloc[:,2].values
+ 
+# fitting the linear regression model
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X,y)
+ 
+# visualising the linear regression model
+plt.scatter(X,y, color='red')
+plt.plot(X, lin_reg.predict(X),color='blue')
+plt.title("Truth or Bluff(Linear)")
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+ 
+# polynomial regression model
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree=2)
+X_poly = poly_reg.fit_transform(X)
+  
+X_poly     # prints X_poly
+ 
+lin_reg2 = LinearRegression()
+lin_reg2.fit(X_poly,y)
+ 
+ 
+# visualising polynomial regression
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree=4)
+X_poly = poly_reg.fit_transform(X)
+lin_reg2 = LinearRegression()
+lin_reg2.fit(X_poly,y)
+  
+X_grid = np.arange(min(X),max(X),0.1)
+X_grid = X_grid.reshape(len(X_grid),1) 
+plt.scatter(X,y, color='red') 
+  
+plt.plot(X_grid, lin_reg2.predict(poly_reg.fit_transform(X_grid)),color='blue') 
+  
+plt.title("Truth or Bluff(Polynomial)")
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+
+Q.3.	Create a Node.js file that opens the requested file and returns the content to the client. If anything goes wrong, throw a 404 error.
+***madam code***
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+  var q = url.parse(req.url, true);
+  var filename = "." + q.pathname;
+
+  fs.readFile(filename, function(err, data) {
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/html'});
+      return res.end("404 Not Found");
+    }
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    return res.end();
+  });
+}).listen(8080);
+
+
+***my code***
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+
+http.createServer(function(req,res) {
+    var q = url.parse(req.url,true);
+    var filename = "." + q.pathname;
+    fs.readFile(filename,function(err,data) {
+        if(err) {
+            res.writeHead(404,{'Content-Type': 'text/html'});
+            return res.end("404 Not Found");
+        }
+        res.writeHead(200,{'Content-Type': 'text/html'});
+        res.write(data);
+        return res.end();
+    });
+}).listen(8002);
+
+console.log('Node.js web server at port 8002 is running..')

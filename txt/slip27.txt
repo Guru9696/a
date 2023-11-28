@@ -1,0 +1,310 @@
+
+Q.1	Write a Java Program to implement Abstract Factory Pattern for Shape interface.
+[20 m]
+
+
+ interface Shape {
+   void draw();
+}
+ class RoundedRectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside RoundedRectangle::draw() method.");
+   }
+}
+
+
+ class RoundedSquare implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside RoundedSquare::draw() method.");
+   }
+}
+
+
+ class Rectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside Rectangle::draw() method.");
+   }
+}
+
+ class Square implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside Square::draw() method.");
+   }
+}
+// Step 3 Create an Abstract class to get factories for Normal and Rounded Shape Objects.
+
+
+
+ abstract class AbstractFactory {
+   abstract Shape getShape(String shapeType) ;
+}
+// Step 4 Create Factory classes extending AbstractFactory to generate object of concrete class based on given information.
+
+
+
+ class ShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new Rectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new Square();
+      }	
+      return null;
+   }
+}
+
+
+ class RoundedShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new RoundedRectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new RoundedSquare();
+      }	
+      return null;
+   }
+}
+// Step 5 Create a Factory generator/producer class to get factories by passing an information such as Shape
+
+
+ class FactoryProducer {
+   public static AbstractFactory getFactory(boolean rounded){   
+      if(rounded){
+         return new RoundedShapeFactory();         
+      }else{
+         return new ShapeFactory();
+      }
+   }
+}
+// Step 6 Use the FactoryProducer to get AbstractFactory in order to get factories of concrete classes by passing an information such as type.
+
+
+
+public class slip17_27 {
+   public static void main(String[] args) {
+      //get shape factory
+      AbstractFactory shapeFactory = FactoryProducer.getFactory(false);
+      //get an object of Shape Rectangle
+      Shape shape1 = shapeFactory.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape1.draw();
+      //get an object of Shape Square 
+      Shape shape2 = shapeFactory.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape2.draw();
+      //get shape factory
+      AbstractFactory shapeFactory1 = FactoryProducer.getFactory(true);
+      //get an object of Shape Rectangle
+      Shape shape3 = shapeFactory1.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape3.draw();
+      //get an object of Shape Square 
+      Shape shape4 = shapeFactory1.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape4.draw();
+
+   }
+}
+
+Q.2.	Write a python program to implement Polynomial Linear Regression for given dataset
+[20 M]
+***sir code***
+import pandas as pd
+import matplotlib .pyplot as plt
+
+df= pd.read_csv('Salary.csv')
+df
+
+plt.scatter(df['YearsExperience'],df['Salary'])
+
+x= df.iloc[:,1:-1].values
+y= df.iloc[:,-1].values
+X
+
+y
+
+from sklearn.preprocessing import PolynomialFeatures
+poly =PolynomialFeatures(degree=3)
+x_poly = poly.fit_transform(x)
+x_poly
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(x_poly,y)
+
+plt.scatter(x,y)
+plt.plot(x,model.predict(poly.fit_transform(x)))
+
+model.predict(poly.fit_transform([[6]]))
+
+***my code***
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+  
+dataset = pd.read_csv('Position_Salaries.csv')
+dataset
+ 
+X = dataset.iloc[:,1:2].values  
+y = dataset.iloc[:,2].values
+ 
+# fitting the linear regression model
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X,y)
+ 
+# visualising the linear regression model
+plt.scatter(X,y, color='red')
+plt.plot(X, lin_reg.predict(X),color='blue')
+plt.title("Truth or Bluff(Linear)")
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+ 
+# polynomial regression model
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree=2)
+X_poly = poly_reg.fit_transform(X)
+  
+X_poly     # prints X_poly
+ 
+lin_reg2 = LinearRegression()
+lin_reg2.fit(X_poly,y)
+ 
+ 
+# visualising polynomial regression
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree=4)
+X_poly = poly_reg.fit_transform(X)
+lin_reg2 = LinearRegression()
+lin_reg2.fit(X_poly,y)
+  
+X_grid = np.arange(min(X),max(X),0.1)
+X_grid = X_grid.reshape(len(X_grid),1) 
+plt.scatter(X,y, color='red') 
+  
+plt.plot(X_grid, lin_reg2.predict(poly_reg.fit_transform(X_grid)),color='blue') 
+  
+plt.title("Truth or Bluff(Polynomial)")
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+
+Q.3	Create your Django app in which after running the server, you should see on the browser, the text “Hello! I am learning Django”, which you defined in the index view.
+[20 M]
+
+***sir code***
+root folder is que1 in 2 folders
+1) que1
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path , include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("",include('sample.urls')),
+]
+
+
+
+2) sample (sample is app folder)
+admin.py
+from django.contrib import admin
+
+apps.py
+from django.apps import AppConfig
+
+
+class SampleConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "sample"
+
+
+urls.py
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("",views.home, name='home'),
+]
+
+views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+def home(request):
+    return HttpResponse("hello, How are ")
+
+
+***my code***
+
+root folder is assi1 in 2 folders
+1) assi1
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+
+
+urlpatterns = [
+    path('', index, name='index'),
+
+]
+
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+
+
+views.py
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello world</title>
+</head>
+<body>
+    <h1>
+        Hello I am Learning Django
+    </h1>
+</body>
+</html>
+ 
+
+

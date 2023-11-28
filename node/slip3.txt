@@ -1,0 +1,245 @@
+
+Q. 3. Create an HTML form for Login and write a JavaScript to validate email ID using Regular Expression.
+***madam code***
+<html>
+<head>
+  <script>
+    function validateform(){  
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("psw").value;
+      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+          alert("You have entered an invalid email address!");
+    }
+    </script>
+</head>
+<body>
+  <form name="myform" onsubmit="return validateform()">
+      <h1>Please fill in this form to Login.</h1>
+     
+      Email :
+      <input type="text" autocomplete="off" placeholder="Enter Email" name="email" id="email" required><br>
+      Password :
+      <input type="password" autocomplete="off" placeholder="Enter Password" name="psw" id="psw" required><br>
+      <button type="submit" class="registerbtn">Register</button>
+  </form>
+</body>
+</html>
+
+
+***mycode ***
+
+assi3.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="assi3.css">
+
+    <title>Java Script Demos</title>
+    <script language="javascript">
+        var flag;
+        function ValidationFrom(frm) {
+
+    
+
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (txtEmail.value.match(mailformat)) {
+                alert("Valid email address!");
+                document.form1.text1.focus();
+                return true;
+            }
+            else {
+                alert("You have entered an invalid email address!");
+                document.form1.text1.focus();
+                return false;
+            }
+
+
+        }
+
+
+var myInput = document.getElementById("psw");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
+
+console.log(myInput);
+
+// When the user clicks on the password field, show the message box
+myInput.onfocus = function() {
+  document.getElementById("message").style.display = "block";
+}
+
+// When the user clicks outside of the password field, hide the message box
+myInput.onblur = function() {
+  document.getElementById("message").style.display = "none";
+}
+
+// When the user starts to type something inside the password field
+myInput.onkeydown = function() {
+
+  
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  if(myInput.value.match(lowerCaseLetters)) {
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+   
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
+}
+
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  if(myInput.value.match(upperCaseLetters)) {
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
+  }
+
+  // Validate numbers
+  var numbers = /[0-9]/g;
+  if(myInput.value.match(numbers)) {
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
+  }
+
+  // Validate length
+  if(myInput.value.length >= 8) {
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
+  }
+}
+      
+    </script>
+</head>
+
+<body>
+ 
+    <form name="frm1" id="frm1" onsubmit="return ValidationFrom(this)">
+        <table align="center" class="tb1" cellspacing="5" cellpadding="5">
+
+            <caption> REGISTRATION FORM</caption>
+            <thead>
+
+            </thead>
+
+            <tbody>
+
+                 <tr>
+                    <td> Email</td>
+                    <td> <input type="text" id="txtEmail" size="30" class="brd"> </td>
+                 
+                </tr>
+                <tr>
+                    <td> Password</td>
+                    <td> <input type="password" id="psw" size="30" class="brd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required> </td>
+                    
+                </tr> 
+
+
+
+
+
+
+
+
+                <td> <input type="submit" id="btnsubmit" value="Submit" class="btn" > </td>
+
+
+
+
+
+
+                
+            </tbody>
+          
+        </table>
+
+
+      
+
+    </form>
+    <div id="message">
+      <h3>Password must contain the following:</h3>
+      <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+      <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+      <p id="number" class="invalid">A <b>number</b></p>
+      <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+    </div>
+
+   
+</body>
+
+</html>
+
+assi3.css
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  
+}
+
+.container {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+ #message{
+
+  background: #f0f4f7;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  /* content: "&#10004;"; */
+}
+
+.invalid {
+  color: rgb(255, 0, 0);
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  /* content: "&#10006;"; */
+}

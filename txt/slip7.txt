@@ -1,0 +1,233 @@
+
+Q.1	Write a Java Program to implement undo command to test Ceiling fan.	[20 M]
+import java.util.Stack;
+
+interface Command {
+	public void execute();
+	public void undo();
+}
+
+ class CeilingFanOffCommand implements Command {
+	CeilingFan ceilingFan;
+	int prevSpeed;
+
+	public CeilingFanOffCommand(CeilingFan ceilingFan) {
+		this.ceilingFan = ceilingFan;
+	}
+
+	public void execute() {
+		prevSpeed = ceilingFan.getSpeed();
+		ceilingFan.off();
+	}
+
+	public void undo() {
+		if (prevSpeed == CeilingFan.HIGH) {
+			ceilingFan.high();
+		} else if (prevSpeed == CeilingFan.MEDIUM) {
+			ceilingFan.medium();
+		} else if (prevSpeed == CeilingFan.LOW) {
+			ceilingFan.low();
+		} else if (prevSpeed == CeilingFan.OFF) {
+			ceilingFan.off();
+		}
+	}
+}
+
+	 class CeilingFanMediumCommand implements Command {
+	CeilingFan ceilingFan;
+	int prevSpeed;
+
+	public CeilingFanMediumCommand(CeilingFan ceilingFan) {
+		this.ceilingFan = ceilingFan;
+	}
+
+	public void execute() {
+		prevSpeed = ceilingFan.getSpeed();
+		ceilingFan.medium();
+	}
+
+	public void undo() {
+		if (prevSpeed == CeilingFan.HIGH) {
+			ceilingFan.high();
+		} else if (prevSpeed == CeilingFan.MEDIUM) {
+			ceilingFan.medium();
+		} else if (prevSpeed == CeilingFan.LOW) {
+			ceilingFan.low();
+		} else if (prevSpeed == CeilingFan.OFF) {
+			ceilingFan.off();
+		}
+	}
+}
+
+ class CeilingFanHighCommand implements Command {
+	CeilingFan ceilingFan;
+	int prevSpeed;
+
+	public CeilingFanHighCommand(CeilingFan ceilingFan) {
+		this.ceilingFan = ceilingFan;
+	}
+
+	public void execute() {
+		prevSpeed = ceilingFan.getSpeed();
+		ceilingFan.high();
+	}
+
+	public void undo() {
+		if (prevSpeed == CeilingFan.HIGH) {
+			ceilingFan.high();
+		} else if (prevSpeed == CeilingFan.MEDIUM) {
+			ceilingFan.medium();
+		} else if (prevSpeed == CeilingFan.LOW) {
+			ceilingFan.low();
+		} else if (prevSpeed == CeilingFan.OFF) {
+			ceilingFan.off();
+		}
+	}
+}
+
+ class CeilingFanLowCommand implements Command {
+	CeilingFan ceilingFan;
+	int prevSpeed;
+
+	public CeilingFanLowCommand(CeilingFan ceilingFan) {
+		this.ceilingFan = ceilingFan;
+	}
+
+	public void execute() {
+		prevSpeed = ceilingFan.getSpeed();
+		ceilingFan.low();
+	}
+
+	public void undo() {
+		if (prevSpeed == CeilingFan.HIGH) {
+			ceilingFan.high();
+		} else if (prevSpeed == CeilingFan.MEDIUM) {
+			ceilingFan.medium();
+		} else if (prevSpeed == CeilingFan.LOW) {
+			ceilingFan.low();
+		} else if (prevSpeed == CeilingFan.OFF) {
+			ceilingFan.off();
+		}
+	}
+}
+public class CeilingFan {
+	public static final int HIGH = 3;
+	public static final int MEDIUM = 2;
+	public static final int LOW = 1;
+	public static final int OFF = 0;
+	String location;
+	int speed;
+
+	public CeilingFan(String location) {
+		this.location = location;
+		speed = OFF;
+	}
+
+	public void high() {
+		speed = HIGH;
+		System.out.println(location + " ceiling fan is on high");
+	} 
+
+	public void medium() {
+		speed = MEDIUM;
+		System.out.println(location + " ceiling fan is on medium");
+	}
+
+	public void low() {
+		speed = LOW;
+		System.out.println(location + " ceiling fan is on low");
+	}
+
+	public void off() {
+		speed = OFF;
+		System.out.println(location + " ceiling fan is off");
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+}
+
+
+
+Q.2.	Write a python program to implement Naive Bayes.	[20 M]
+
+***sir code***
+#Naive Bayes
+import pandas as pd
+
+df=pd.read_csv("Titanic-Dataset.csv")
+df.head(1)
+
+df=df.drop(['PassengerId','Name','SibSp','Parch','Embarked','Cabin','Ticket'], axis='columns')
+df.head()
+
+from sklearn.preprocessing import LabelEncoder
+label = LabelEncoder()
+df['Gender'] = label.fit_transform(df['Gender'])
+df.head()
+
+input=df.drop(['Survived'],axis='columns')
+input.head()
+
+target=df['Survived']
+target.head()
+
+input.columns[input.isna().any()]
+input
+
+input.Age = input.Age.fillna(input.Age.mean())
+input
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(input,target,test_size=0.2)
+len(y_test)
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(x_train,y_train)
+
+model.score(x_test,y_test)
+
+x_test[:10]
+
+y_test[:10]
+
+model.predict(x_test[:10])
+
+
+
+
+Q. 3	Create a Node.js file that writes an HTML form, with an upload field.	[20 M]
+
+***madam code***
+var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+  res.write('<input type="file" name="filetoupload"><br>');
+  res.write('<input type="submit">');
+  res.write('</form>');
+  return res.end();
+}).listen(8080);
+
+
+***my code***
+var http = require('http'); 
+
+var server = http.createServer(function (req, res) {  
+
+res.writeHead(200, {'Content-Type': 'text/html'});
+res.write("<h1 style='background-color:green'>Upload your file</h1>");
+res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+res.write("<input type='file' name='fileupload'/>");
+
+res.write("<input type='submit' value='Submit'");
+res.write("</form>");
+res.end();
+
+});
+
+server.listen(8002); 
+
+console.log('Node.js web server at port 8002 is running..')

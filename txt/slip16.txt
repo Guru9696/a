@@ -1,0 +1,226 @@
+Q.1	Write a Java Program to implement Observer Design Pattern for number conversion. Accept a number in Decimal form and represent it in Hexadecimal, Octal and Binary. Change the Number and it reflects in other forms also	[20 M]
+
+import java.util.ArrayList;
+import java.util.List;
+ class Subject {
+	
+   private List<Observer> observers = new ArrayList<Observer>();
+   private int state;
+
+   public int getState() {
+      return state;
+   }
+
+   public void setState(int state) {
+      this.state = state;
+      notifyAllObservers();
+   }
+
+   public void attach(Observer observer){
+      observers.add(observer);		
+   }
+
+   public void notifyAllObservers(){
+      for (Observer observer : observers) {
+         observer.update();
+      }
+   } 	
+}
+
+ abstract class Observer {
+   protected Subject subject;
+   public abstract void update();
+}
+
+ class BinaryObserver extends Observer{
+
+   public BinaryObserver(Subject subject){
+      this.subject = subject;
+      this.subject.attach(this);
+   }
+
+   @Override
+   public void update() {
+      System.out.println( "Binary String: " + Integer.toBinaryString( subject.getState() ) ); 
+   }
+}
+
+ class OctalObserver extends Observer{
+
+   public OctalObserver(Subject subject){
+      this.subject = subject;
+      this.subject.attach(this);
+   }
+
+   @Override
+   public void update() {
+     System.out.println( "Octal String: " + Integer.toOctalString( subject.getState() ) ); 
+   }
+}
+
+ class HexaObserver extends Observer{
+
+   public HexaObserver(Subject subject){
+      this.subject = subject;
+      this.subject.attach(this);
+   }
+
+   @Override
+   public void update() {
+      System.out.println( "Hex String: " + Integer.toHexString( subject.getState() ).toUpperCase() ); 
+   }
+}
+
+ class slip16 {
+   public static void main(String[] args) {
+      Subject subject = new Subject();
+
+      new HexaObserver(subject);
+      new OctalObserver(subject);
+      new BinaryObserver(subject);
+
+      System.out.println("First state change: 15");	
+      subject.setState(15);
+      System.out.println("Second state change: 10");	
+      subject.setState(10);
+   }
+}
+
+Q.2	Write a python program to Implement Simple Linear Regression for predicting house price.	[20 M]
+
+*** sir code ***
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+ps=pd.read_csv("Housing.csv")
+df = ps[['area', 'price']]
+df.sample(5)
+
+plt.scatter(df.area,df.price,color='red',marker='+')
+
+In_v=df.drop('price',axis='columns')
+In_v
+
+model=linear_model.LinearRegression()
+model.fit(In_v,df.price)
+
+model.predict([[6720]])
+
+
+***my code ***
+
+  import numpy as np
+    import pandas as pd
+    
+    # Visualisation Libraries
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    
+    # Data Processing Libraries
+    from sklearn.feature_selection import SelectKBest
+    from sklearn.feature_selection import chi2
+    from sklearn import model_selection
+    from sklearn.metrics import mean_squared_error, r2_score
+    
+    # Algorithm Libraries
+    from sklearn.ensemble import ExtraTreesClassifier
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    from sklearn.tree import DecisionTreeRegressor
+    from sklearn.ensemble import RandomForestRegressor
+    
+    # Math Library
+    import math
+    
+    # Importing Dataset
+    df = pd.read_csv("HousingData.xls")
+    
+    # Printing Dataset
+    df.head()   
+
+       
+    # Calculating the mean, minimum, deviation, maximum and other factors
+    df.describe()
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['RM'], bins = 35)
+    plt.title("Average number of rooms Distribution ")
+    plt.xlabel("RM")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['LSTAT'], bins = 35)
+    plt.title("Homeowners distribution with low class")
+    plt.xlabel("LSTAT")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['PTRATIO'], bins = 35)
+    plt.title("Students to Teachers ratio distribution")
+    plt.xlabel("PTRATIO")
+    plt.ylabel("frequency")
+    plt.show()
+    
+    fig=plt.figure()
+    ax=fig.add_subplot(1, 1, 1)
+    ax.hist(df['AGE'], bins = 35)
+    plt.title("Ages of Black Owned Portion in the town")
+    plt.xlabel("AGE")
+    plt.ylabel("B")
+    plt.show()
+    
+    N = 506
+    x = df.AGE
+    y = df.B
+    colors = np.random.rand(N)
+
+    plt.scatter(x, y, c=colors)
+    plt.title("scatter")
+    plt.show()
+    
+    plt.title("hitmap")
+    sns.heatmap(df.isnull(),yticklabels=False,cbar=False,cmap='Blues')
+
+
+Q.3	Create a js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a callback function when one of those events is detected.	[20 M]
+***madam code***
+
+var events = require('events');
+var myeventEmitter = new events.EventEmitter();
+myeventEmitter.on('myevent', function Listener1(){
+     console.log('listener1 executed!');
+});
+myeventEmitter.on('myevent' ,function Listener2(a,b){
+     console.log('listener2 executed! parameter');
+});
+console.log(myeventEmitter.listeners('myevent'));
+myeventEmitter.emit('myevent' ,10,20);
+
+
+***my code***
+var events = require('events');
+
+// Create an eventEmitter object
+var eventEmitter = new events.EventEmitter();
+// Create an event handler as follows
+var connectHandler = function connected() {
+   console.log('connection succesful.');
+  
+   // Fire the data_received event 
+   eventEmitter.emit('data_received');
+}
+// Bind the connection event with the handler
+eventEmitter.on('connection', connectHandler);
+// Bind the data_received event with the anonymous function
+eventEmitter.on('data_received', function() {
+   console.log('data received succesfully.');
+});
+// Fire the connection event 
+eventEmitter.emit('connection');
+console.log("Program Ended.");

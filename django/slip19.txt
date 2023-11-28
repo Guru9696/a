@@ -1,0 +1,211 @@
+
+Q.3	Design a Django application that adds web pages with views and templates.	[20 M]
+
+***sir code***
+root folder is que2 in 2 folders
+1) que2
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include('myapp.urls')),
+]
+
+
+
+
+
+2) myapp (myapp is app folder)
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyappConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'myapp'
+
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.home,name='home'),
+    path('about/',views.about,name='about'),
+]
+
+
+views.py
+from django.shortcuts import render
+
+def home(request):
+    return render(request, "myapp/home.html")
+
+def about(request):
+    return render(request, "myapp/about.html")
+
+
+1) template (this folder present in myapp folder)
+1)myapp this folder in template folder
+home.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Home Page
+        </title>
+    </head>
+    <body>
+        <h1>
+            Welcome to the Home Page
+        </h1>
+    </body>
+</html>
+
+about.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            about Page
+        </title>
+    </head>
+    <body>
+        <h1>
+            About us
+        </h1>
+        <p>
+            this is the about page
+        </p>
+    </body>
+</html>
+
+
+
+***my code***
+root folder is assi2 in 2 folders
+1) assi2
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+from my_app.views import f1
+from my_app.views import f2
+from my_app.views import f3
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', index, name='index'),
+	path('first/',f1),
+	path('second/',f2),
+	path('third/',f3),
+]
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+views.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+from my_app.views import f1
+from my_app.views import f2
+from my_app.views import f3
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', index, name='index'),
+	path('first/',f1),
+	path('second/',f2),
+	path('third/',f3),
+]
+
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>assi2</title>
+</head>
+<body>
+    <h1>
+        Design a Django application that adds web pages with views and templates.
+    </h1>
+    <a href="/first">first page</a>
+    <br>
+    <br>
+    <a href="/second">Second pages</a>
+    <br>
+    <br>
+    <a href="/third">Third page</a>
+</body>
+</html>
+
+a.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+b.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>second pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+c.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Third pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+ 
+

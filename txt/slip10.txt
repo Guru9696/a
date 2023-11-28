@@ -1,0 +1,260 @@
+Q.1	Write a Java Program to implement Strategy Pattern for Duck Behavior. Create instance variable that holds current state of Duck from there, we just need to handle all Flying Behaviors and Quack Behavior	[20 M]
+
+
+ abstract class Duck {
+  FlyBehaviour flyBehaviour;
+  QuackBehaviour quackBehaviour;
+  public Duck() {
+  }
+
+  public abstract void display();
+
+  public void performFly() {
+    flyBehaviour.fly();
+  }
+
+  public void performQuack() {
+    quackBehaviour.quack();
+  }
+  public void swim() {
+    System.out.println("All ducks float, even decoys!");
+  }
+  public void setFlyBehaviour(FlyBehaviour fb) {
+    flyBehaviour = fb;
+  }
+  public void setQuackBehaviour(QuackBehaviour qb) {
+    quackBehaviour =  qb;
+  }
+}
+
+
+ class MallardDuck extends Duck {
+
+  public MallardDuck() {
+    quackBehaviour = new Quack();
+    flyBehaviour = new FlyWithWings();
+  }
+
+  public void display() {
+    System.out.println("I'm a real Mallard duck");
+  }
+}
+
+ class ModolDuck extends Duck {
+  // public ModelDuck() {
+     public ModolDuck() {
+    flyBehaviour = new FlyNoWay();
+    quackBehaviour = new Quack();
+  }
+
+  public void display() {
+    System.out.println("I'm a model duck");
+  }
+}
+
+
+ interface FlyBehaviour {
+  public void fly();
+}
+
+
+ class FlyWithWings implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I'm flying!!");
+  }
+}
+
+
+ class FlyNoWay implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I can't fly");
+  }
+}
+
+
+class FlyRocketPowered implements FlyBehaviour {
+  public void fly() {
+    System.out.println("I'm flying with a rocket!");
+  }
+}
+
+
+ interface QuackBehaviour {
+  // public void quack() {
+  public void quack() ;
+}
+
+
+ class Quack implements QuackBehaviour {
+  public void quack() {
+    System.out.println("Quack");
+  }
+}
+
+
+ class MuteQuack implements QuackBehaviour {
+  public void quack() {
+    System.out.println("<< Silence >>");
+  }
+}
+
+
+ class Squeak implements QuackBehaviour {
+  public void quack() {
+    System.out.println("Squeak");
+  }
+}
+
+// MiniDuckSimulator.Java
+// public class slip10 {
+//   public static void main(String[] args) {
+//     Duck mallard = new MallardDuck();
+//     mallard.performQuack();
+//     mallard.performFly();
+//   }
+// }
+
+public class slip10_26 {
+  public static void main(String[] args) {
+    Duck mallard = new MallardDuck();
+    mallard.performQuack();
+    mallard.performFly();
+    // Duck model = new ModelDuck();
+    Duck model = new ModolDuck();
+    model.performFly();
+    model.setFlyBehaviour(new FlyRocketPowered());
+    model.performFly();
+  }
+}
+
+
+Q. 2	Write a Python program to prepare Scatter Plot for Iris Dataset.	[20 M]
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+iris_data = pd.read_csv("iris2.csv")
+iris_data
+
+versicolor = iris_data[iris_data.variety == "Versicolor"]
+setosa = iris_data[iris_data.variety =="Setosa"]
+virginica = iris_data[iris_data.variety == "Virginica"]
+
+fig, ax = plt.subplots()
+fig.set_size_inches(8, 8)
+
+points = ax.scatter(versicolor["petal.length"], versicolor["petal.width"], label="Versicolor")
+
+points.set_facecolor("green")
+
+ax.scatter(setosa["petal.length"], setosa["petal.width"], label="Setosa", marker="x", facecolor="blue")
+ax.scatter(virginica["petal.length"], virginica["petal.width"], label="Virginica", marker="s", facecolor="red")
+
+ax.set_xlabel("Petal Length (cm)")
+ax.set_ylabel("Petal Width (cm)")
+ax.set_title("Iris Petal Sizes")
+ax.legend()
+
+
+
+
+Q. 3	Create a node.js file that Insert Multiple Records in "student" table, and display the result object on console.
+var http = require('http'); 
+var mysql = require('mysql');
+
+var server = http.createServer(function (req, res) {  
+
+res.writeHead(200, {'Content-Type': 'text/html'});
+res.write("<h1 style='background-color:green'>Upload your file</h1>");
+
+res.end();
+
+});
+
+server.listen(8002); 
+
+console.log('Node.js web server at port 8002 is running..')
+
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+    host: "localhost",
+
+    user: "root",
+  
+    //password: "", /*pc xampp database or localhost*/
+   //password: "Gaurav@123", /* pc commond line mysql or localhost*/
+   password: "raj@123", /* mobile xampp or local host*/
+
+});
+
+// use the  query to connect a localhost
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to localhost!");
+ 
+  });
+
+
+ // use the query to create a Database.
+  let databaseName = "lab_pro";
+  
+  let createQuery = `CREATE DATABASE ${databaseName}`;
+
+ 
+  con.query(createQuery, (err) => {
+      if(err==1) throw  "Couldn't create";
+
+      console.log(databaseName+" Database Created Successfully !");
+  // use the query to Use a Database.
+      let useQuery = `USE ${databaseName}`;
+      con.query(useQuery, (error) => {
+          if(error) throw error;
+
+          console.log("Using Database"+databaseName);
+        })
+  // Create a new Table
+    let TableName = "student";
+    let table_query = `CREATE TABLE ${TableName} (name VARCHAR(255), address VARCHAR(255))`;
+  
+    con.query(table_query, (err) => {
+      if(err==1) throw "Couldn't create";
+      console.log(TableName+" Table created");
+    });
+
+//Insert Data in Table
+
+  let Insert_query = `INSERT INTO ${TableName} (name, address) VALUES ?;`;
+  
+// multiple Values to be inserted
+    let values = [
+        ['Amit', 'Yellow Park'],
+        ['Rishi', 'Park 38'],
+        ['Akash', 'Central st 954'],
+        ['Pratik', 'Road 989'],
+        ['Mangesh', 'Sideway']
+    ];
+  
+  // Executing the query show row are inserted in the table
+    con.query(Insert_query, [values], (err) => {
+    
+        if (err==1) throw "Couldn't create";
+        console.log("All Rows Inserted");
+    });
+
+//select query to show table data
+    let show_student = `SELECT * FROM ${TableName}`
+    con.query(show_student, function (err, result, fields) {
+
+        if (err) throw err;
+    
+        console.log(result);
+    
+      });
+  });
+
+
+
+
+

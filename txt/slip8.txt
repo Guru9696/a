@@ -1,0 +1,464 @@
+Q. 1	Write a Java Program to implement State Pattern for Gumball Machine.
+Create instance variable that holds current state from there, we just need to handle all actions, behaviors and state transition that can happen	[20 M]
+
+ interface State {
+
+	public void insertQuarter();
+	public void ejectQuarter();
+	public void turnCrank();
+	public void dispense();
+	
+	public void refill();
+}
+ class SoldState implements State {
+
+    GumballMachine gumballMachine;
+
+    public SoldState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+	public void insertQuarter() {
+		System.out.println("Please wait, we're already giving you a gumball");
+	}
+
+	public void ejectQuarter() {
+		System.out.println("Sorry, you already turned the crank");
+	}
+
+	public void turnCrank() {
+		System.out.println("Turning twice doesn't get you another gumball!");
+	}
+
+	public void dispense() {
+		gumballMachine.releaseBall();
+		if (gumballMachine.getCount() > 0) {
+			gumballMachine.setState(gumballMachine.getNoQuarterState());
+		} else {
+			System.out.println("Oops, out of gumballs!");
+			gumballMachine.setState(gumballMachine.getSoldOutState());
+		}
+	}
+
+	public void refill() { }
+
+	public String toString() {
+		return "dispensing a gumball";
+	}
+}
+
+ class SoldOutState implements State {
+    GumballMachine gumballMachine;
+
+    public SoldOutState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+	public void insertQuarter() {
+		System.out.println("You can't insert a quarter, the machine is sold out");
+	}
+
+	public void ejectQuarter() {
+		System.out.println("You can't eject, you haven't inserted a quarter yet");
+	}
+
+	public void turnCrank() {
+		System.out.println("You turned, but there are no gumballs");
+	}
+
+	public void dispense() {
+		System.out.println("No gumball dispensed");
+	}
+	
+	public void refill() { 
+		gumballMachine.setState(gumballMachine.getNoQuarterState());
+	}
+
+	public String toString() {
+		return "sold out";
+	}
+}
+
+ class NoQuarterState implements State {
+    GumballMachine gumballMachine;
+
+    public NoQuarterState(GumballMachine gumballMachine) {
+        this.gumballMachine = gumballMachine;
+    }
+
+	public void insertQuarter() {
+		System.out.println("You inserted a quarter");
+		gumballMachine.setState(gumballMachine.getHasQuarterState());
+	}
+
+	public void ejectQuarter() {
+		System.out.println("You haven't inserted a quarter");
+	}
+
+	public void turnCrank() {
+		System.out.println("You turned, but there's no quarter");
+	 }
+
+	public void dispense() {
+		System.out.println("You need to pay first");
+	} 
+	
+	public void refill() { }
+
+	public String toString() {
+		return "waiting for quarter";
+	}
+}
+
+class HasQuarterState implements State {
+	GumballMachine gumballMachine;
+
+	public HasQuarterState(GumballMachine gumballMachine) {
+		this.gumballMachine = gumballMachine;
+	}
+
+	public void insertQuarter() {
+		System.out.println("You can't insert another quarter");
+	}
+
+	public void ejectQuarter() {
+		System.out.println("Quarter returned");
+		gumballMachine.setState(gumballMachine.getNoQuarterState());
+	}
+
+	public void turnCrank() {
+		System.out.println("You turned...");
+		gumballMachine.setState(gumballMachine.getSoldState());
+	}
+
+    public void dispense() {
+        System.out.println("No gumball dispensed");
+    }
+
+    public void refill() { }
+
+	public String toString() {
+		return "waiting for turn of crank";
+	}
+
+}
+
+class GumballMachine {
+
+	State soldOutState;
+	State noQuarterState;
+	State hasQuarterState;
+	State soldState;
+
+	State state;
+	int count = 0;
+
+	public GumballMachine(int numberGumballs) {
+		soldOutState = new SoldOutState(this);
+		noQuarterState = new NoQuarterState(this);
+		hasQuarterState = new HasQuarterState(this);
+		soldState = new SoldState(this);
+
+		this.count = numberGumballs;
+		if (numberGumballs > 0) {
+			state = noQuarterState;
+		} else {
+			state = soldOutState;
+		}
+	}
+
+	public void insertQuarter() {
+		state.insertQuarter();
+	}
+
+	public void ejectQuarter() {
+		state.ejectQuarter();
+	}
+
+	public void turnCrank() {
+		state.turnCrank();
+		state.dispense();
+	}
+
+	void releaseBall() {
+		System.out.println("A gumball comes rolling out the slot...");
+		if (count != 0) {
+			count = count - 1;
+		}
+	}
+
+	int getCount() {
+		return count;
+	}
+
+	void refill(int count) {
+		this.count += count;
+		System.out.println("The gumball machine was just refilled; it's new count is: " + this.count);
+		state.refill();
+	}
+
+	void setState(State state) {
+		this.state = state;
+	}
+    public State getState() {
+        return state;
+    }
+
+    public State getSoldOutState() {
+        return soldOutState;
+    }
+
+    public State getNoQuarterState() {
+        return noQuarterState;
+    }
+
+    public State getHasQuarterState() {
+        return hasQuarterState;
+    }
+
+    public State getSoldState() {
+        return soldState;
+    }
+
+	public String toString() {
+		StringBuffer result = new StringBuffer();
+		result.append("\nMighty Gumball, Inc.");
+		result.append("\nJava-enabled Standing Gumball Model #2004");
+		result.append("\nInventory: " + count + " gumball");
+		if (count != 1) {
+			result.append("s");
+		}
+		result.append("\n");
+		result.append("Machine is " + state + "\n");
+		return result.toString();
+	}
+}
+
+class slip8{
+
+	public static void main(String[] args) {
+		GumballMachine gumballMachine = new GumballMachine(2);
+
+		System.out.println(gumballMachine);
+
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+
+		System.out.println(gumballMachine);
+
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+		
+		gumballMachine.refill(3);
+		gumballMachine.insertQuarter();
+		gumballMachine.turnCrank();
+
+		System.out.println(gumballMachine);
+	}
+}
+
+Q.2.	Write a python program to implement Decision Tree whether or not to play Tennis.
+[20 M]
+
+***sir code***
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+
+data = pd.read_csv("play_tennis.csv")
+data.sample(5)
+
+label_encoder = LabelEncoder()
+data['outlook'] = label_encoder.fit_transform(data['outlook'])
+data['temp'] = label_encoder.fit_transform(data['temp'])
+data['humidity'] = label_encoder.fit_transform(data['humidity'])
+data['wind'] = label_encoder.fit_transform(data['wind'])
+data['play'] = label_encoder.fit_transform(data['play'])
+
+data
+x = data[['outlook', 'temp', 'humidity', 'wind']]
+y = data['play']
+
+clf = DecisionTreeClassifier()
+
+clf.fit(x, y)
+
+new_day = [1, 2, 0, 1] 
+prediction = clf.predict([new_day])
+prediction
+
+predicted_play = label_encoder.inverse_transform(prediction)
+
+print("Prediction:", predicted_play[0])
+
+*** my code***
+# Load libraries
+import numpy as np
+import pandas as pd
+from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
+
+df=pd.read_csv("Play Tennis.csv")
+value=['Outlook','Temprature','Humidity','Wind']
+df
+
+len(df)           #Dataset Lenght
+
+df.shape  #To see the number of rows and columns in our dataset:
+
+df.head()         #To inspect the first five records of the dataset:
+
+df.tail()         #To inspect the last five records of the dataset:
+
+df.describe()     #To see statistical details of the dataset:
+
+#machine learning algorithms can only learn from numbers (int, float, doubles .. )
+#so let us encode it to int
+from sklearn import preprocessing
+string_to_int= preprocessing.LabelEncoder()                     #encode your data
+df=df.apply(string_to_int.fit_transform) #fit and transform it
+df
+
+#To divide our data into attribute set and Label:
+feature_cols = ['Outlook','Temprature','Humidity','Wind']
+X = df[feature_cols ]                               #contains the attribute 
+y = df.Play_Tennis                                  #contains the label
+#To divide our data into training and test sets:
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30) 
+
+# perform training 
+from sklearn.tree import DecisionTreeClassifier                             # import the classifier
+classifier =DecisionTreeClassifier(criterion="entropy", random_state=100)     # create a classifier object
+classifier.fit(X_train, y_train)                                              # fit the classifier with X and Y data or 
+DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=100,
+            splitter='best')
+#Predict the response for test dataset
+y_pred= classifier.predict(X_test)  
+# Model Accuracy, how often is the classifier correct?
+from sklearn.metrics import accuracy_score
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+Accuracy: 0.4
+Now let's compare some of our predicted values with the actual values and see how accurate we were:
+data_p=pd.DataFrame({'Actual':y_test, 'Predicted':y_pred})  
+data_p
+
+from sklearn.metrics import classification_report, confusion_matrix  
+print(confusion_matrix(y_test, y_pred))  
+print(classification_report(y_test, y_pred)) 
+
+from sklearn.tree import export_graphviz
+from sklearn.externals.six import StringIO
+from IPython.display import Image
+import pydotplus
+dot_data = StringIO()
+export_graphviz(classifier, out_file=dot_data,
+filled=True, rounded=True,
+special_characters=True,feature_names =value,class_names=['0','1'])
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
+graph.write_png('Play Tennis.png')
+Image(graph.create_png())
+
+Q. 3	Create a Node.js file that demonstrates create database and table in MySQL. [20 M]
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+    host: "localhost",
+
+    user: "root",
+  
+    //password: "", /*pc xampp database or localhost*/
+   //password: "Gaurav@123", /* pc commond line mysql or localhost*/
+   password: "raj@123", /* mobile xampp or local host*/
+});
+
+// use the  query to connect a localhost
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to localhost!");
+ 
+  });
+
+
+ // use the query to create a Database.
+  let databaseName = "lab_pro";
+  
+  let createQuery = `CREATE DATABASE ${databaseName}`;
+
+ 
+  con.query(createQuery, (err) => {
+      if(err==1) throw  "Couldn't create";
+
+      console.log(databaseName+" Database Created Successfully !");
+  // use the query to Use a Database.
+      let useQuery = `USE ${databaseName}`;
+      con.query(useQuery, (error) => {
+          if(error) throw error;
+
+          console.log("Using Database"+databaseName);
+        })
+  // Create a new Table
+    let TableName = "student";
+    let table_query = `CREATE TABLE ${TableName} (name VARCHAR(255), address VARCHAR(255))`;
+  
+    con.query(table_query, (err) => {
+      if(err==1) throw "Couldn't create";
+      console.log(TableName+" Table created");
+    });
+
+//Insert Data in Table
+
+  let Insert_query = `INSERT INTO ${TableName} (name, address) VALUES ?;`;
+  
+// multiple Values to be inserted
+    let values = [
+        ['Amit', 'Yellow Park'],
+        ['Rishi', 'Park 38'],
+        ['Akash', 'Central st 954'],
+        ['Pratik', 'Road 989'],
+        ['Mangesh', 'Sideway']
+    ];
+  
+  // Executing the query show row are inserted in the table
+    con.query(Insert_query, [values], (err) => {
+    
+        if (err==1) throw "Couldn't create";
+        console.log("All Rows Inserted");
+    });
+
+//select query to show table data
+    let show_student = `SELECT * FROM ${TableName}`
+    con.query(show_student, function (err, result, fields) {
+
+        if (err) throw err;
+    
+        console.log(result);
+    
+      });
+
+//Executing the query to delete specific row rows
+    let D_query = `DELETE FROM student WHERE name = ?`;
+
+   let name = 'Amit';
+  
+    con.query(D_query,name,(err, rows) => {
+         if(err==1) throw "Couldn't delete";
+  
+        console.log('Number of rows deleted = ' + rows.affectedRows);
+    });
+// Executing the query to delete all row rows
+   let delete_query1 = `DELETE FROM ${TableName}`;
+   con.query(delete_query1,(err, rows) =>{
+            if (err) throw err;
+            console.log("All Records deleted = "+ rows.affectedRows);
+        });
+
+  });
+
+

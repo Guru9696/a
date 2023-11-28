@@ -1,0 +1,50 @@
+
+
+Q.3	Using node js create a User Login System.	[20 M]
+
+*** madam code***
+
+html-
+<html>
+<head>
+<title>User login page</title>
+<head>
+    <script>
+          function f(){
+                var validRegex =/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+                var email=document.getElementById("email").value;
+                if(!validRegex.test(email))
+                    alert("Invalid Email!");
+                 else
+                    alert("submitted succesfully");
+                return false;
+         }
+    </script>
+</head>
+<body>
+    <form name="login" onsubmit="f()">
+    <h1>Login here</h1>
+    email id:<input type="text" id="email"/><br><br>
+    password:<input type="password" id="password"><br><br>
+    <input type="submit" id="submit" value="submit">
+    </form>
+</body>
+</html>
+
+javascript-
+var http=require('http');
+http.createServer(function(req,resp){
+    var fs=require("fs");
+    resp.writeHead(200,{'content-type':'text/html'});
+     var content= fs.readFileSync("login.html");
+         if(content){
+       
+         resp.write(content);
+         }
+         else{
+            resp.write("404 error");
+         }
+        
+    resp.end();
+}).listen(6006);
+

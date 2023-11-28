@@ -1,0 +1,48 @@
+body{
+    margin: 30px;
+    width: auto;
+    height: 100%;
+    background-color: rgb(6, 8, 8);
+}
+.section{
+    width: 90%;
+    height: auto;
+    margin: 20px;
+    padding: 20px;
+    background: black;
+}
+nav{
+    margin-top: 5%;
+    margin-left: 15%;
+    padding: 20px;
+    height: auto;
+    width: auto;
+    background-color: black;
+}
+
+nav a{
+
+    margin: 30px;
+    text-decoration: none;
+    text-align: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(20, 240, 0);
+    font-weight: 900;
+}
+button{
+    margin: 70px 10px 10px 15px;
+    padding: 20px 20px 20px 20px;
+    width: 7%;
+    background-color: black;
+    box-shadow: 3px red;
+}
+button a{
+    text-decoration: none;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+   color: chartreuse;
+ font-size: 13px;
+ font-weight: 900;
+}

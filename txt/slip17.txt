@@ -1,0 +1,209 @@
+Q.1	Write a Java Program to implement Abstract Factory Pattern for Shape interface.
+[20 M].
+
+
+ interface Shape {
+   void draw();
+}
+ class RoundedRectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside RoundedRectangle::draw() method.");
+   }
+}
+
+
+ class RoundedSquare implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside RoundedSquare::draw() method.");
+   }
+}
+
+
+ class Rectangle implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside Rectangle::draw() method.");
+   }
+}
+
+ class Square implements Shape {
+   @Override
+   public void draw() {
+      System.out.println("Inside Square::draw() method.");
+   }
+}
+// Step 3 Create an Abstract class to get factories for Normal and Rounded Shape Objects.
+
+
+
+ abstract class AbstractFactory {
+   abstract Shape getShape(String shapeType) ;
+}
+// Step 4 Create Factory classes extending AbstractFactory to generate object of concrete class based on given information.
+
+
+
+ class ShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new Rectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new Square();
+      }	
+      return null;
+   }
+}
+
+
+ class RoundedShapeFactory extends AbstractFactory {
+   @Override
+   public Shape getShape(String shapeType){    
+      if(shapeType.equalsIgnoreCase("RECTANGLE")){
+         return new RoundedRectangle();         
+      }else if(shapeType.equalsIgnoreCase("SQUARE")){
+         return new RoundedSquare();
+      }	
+      return null;
+   }
+}
+// Step 5 Create a Factory generator/producer class to get factories by passing an information such as Shape
+
+
+ class FactoryProducer {
+   public static AbstractFactory getFactory(boolean rounded){   
+      if(rounded){
+         return new RoundedShapeFactory();         
+      }else{
+         return new ShapeFactory();
+      }
+   }
+}
+// Step 6 Use the FactoryProducer to get AbstractFactory in order to get factories of concrete classes by passing an information such as type.
+
+
+
+public class slip17_27 {
+   public static void main(String[] args) {
+      //get shape factory
+      AbstractFactory shapeFactory = FactoryProducer.getFactory(false);
+      //get an object of Shape Rectangle
+      Shape shape1 = shapeFactory.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape1.draw();
+      //get an object of Shape Square 
+      Shape shape2 = shapeFactory.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape2.draw();
+      //get shape factory
+      AbstractFactory shapeFactory1 = FactoryProducer.getFactory(true);
+      //get an object of Shape Rectangle
+      Shape shape3 = shapeFactory1.getShape("RECTANGLE");
+      //call draw method of Shape Rectangle
+      shape3.draw();
+      //get an object of Shape Square 
+      Shape shape4 = shapeFactory1.getShape("SQUARE");
+      //call draw method of Shape Square
+      shape4.draw();
+
+   }
+}
+
+Q.2.	Write a python program to implement Multiple Linear Regression for a given dataset.
+[20 M]
+
+***sir code ***
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+
+ps=pd.read_csv("Housing.csv")
+ps.sample(10)
+
+df = ps[['area','bedrooms','bathrooms','stories','price']]
+df.sample(5)
+
+model=linear_model.LinearRegression()
+model.fit(df.drop('price',axis='columns'),df.price)
+
+model.predict([[7400,3,2,4]])
+
+***my code***
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+  
+dataset = pd.read_csv('Salary_Data.csv')
+dataset.head()
+ 
+# data preprocessing
+X = dataset.iloc[:, :-1].values  #independent variable array
+y = dataset.iloc[:,1].values  #dependent variable vector
+ 
+# splitting the dataset
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=1/3,random_state=0)
+ 
+# fitting the regression model
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train,y_train) #actually produces the linear eqn for the data
+ 
+# predicting the test set results
+y_pred = regressor.predict(X_test) 
+y_pred
+ 
+y_test
+ 
+# visualizing the results
+#plot for the TRAIN
+  
+plt.scatter(X_train, y_train, color='red') # plotting the observation line
+plt.plot(X_train, regressor.predict(X_train), color='blue') # plotting the regression line
+plt.title("Salary vs Experience (Training set)") # stating the title of the graph
+  
+plt.xlabel("Years of experience") # adding the name of x-axis
+plt.ylabel("Salaries") # adding the name of y-axis
+plt.show() # specifies end of graph
+ 
+#plot for the TEST
+  
+plt.scatter(X_test, y_test, color='red') 
+plt.plot(X_train, regressor.predict(X_train), color='blue') # plotting the regression line
+plt.title("Salary vs Experience (Testing set)")
+  
+plt.xlabel("Years of experience") 
+plt.ylabel("Salaries") 
+plt.show() 
+
+Q.3		Write node js application that transfer a file as an attachment on web and enables browser to prompt the  user to download file using express js.	[20 M]
+
+***my code***
+
+var express = require('express');
+var app = express();
+var PORT = 8002;  
+app.get('/', function(req, res){
+  
+    res.download('assi19.txt');
+
+});
+app.listen(PORT, function(err){
+    if (err) console.log(err);
+    console.log("Server listening on PORT", PORT);
+});
+
+// var http = require('http'); 
+
+// var server = http.createServer(function (req, res) {  
+// res.download('assi19.txt');
+
+// res.end();
+
+// });
+
+// server.listen(8002); 
+
+// console.log('Node.js web server at port 8002 is running..')

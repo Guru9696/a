@@ -1,0 +1,353 @@
+
+
+Q.3	Create an HTML form that contain the Employee Registration details and write a JavaScript to validate DOB, Joining Date, and Salary.
+*****madam code *****
+<html>
+    <head>
+        <script type="text/javascript">
+            function validate(){
+            var regName=/^[a-zA-z]+[a-zA-Z]+$/;
+            var dateformatdob = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+            var dateformatjdate = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/;
+            var salaryformat=/^\d{1,6}(?:\.\d{0,2})?$/
+            var name=document.getElementById("name").value;
+            var dob=document.getElementById("dob").value;
+            var jdate=document.getElementById("jdate").value;
+            var salary=document.getElementById("salary").value;
+            
+            if(!regName.test(name))
+                alert("invalid name is given");
+            if(!dateformatjdate.test(jdate))
+                alert("invalid joining date is given");
+            if(!dateformatdob.test(dob))
+                alert("invalid date of birth is given");
+            if(!salaryformat.test(salary))
+                alert("invalid salary");
+        }
+        </script>
+    </head>
+<body>
+    <form>
+        <h1>Employee Rsgistration Details</h1>
+            employee name :
+            <input type="text" name="fname" id="name"><br>
+            date of birth :
+            <input type="text" name="dob" id="dob"><br>
+            joining date :
+            <input type="text" name="jdate" id="jdate"><br>
+            salary :
+            <input type="text" name="salary" id="salary"><br>
+            <input type="button" value="validate" onclick="validate()">
+    </form>
+</body>
+</html>
+ 
+
+ ****madam code end****
+
+****mycode****
+assi2.html 
+
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>JavaScript Form Validation using a sample Employee registration form</title>
+<meta name="keywords" content="example, JavaScript Form Validation, Sample registration form" />
+<meta name="description" content="This document is an example of JavaScript Form Validation using a sample registration form. " />
+<link rel='stylesheet' href='assi2.css' type='text/css' />
+<script src="assi2.js">
+</script>
+</head>
+<body onload="document.registration.userid.focus();"bgcolor="orange">
+<h1>Employee Registration Form</h1>
+<form name='registration' onSubmit="return formValidation();">
+<ul>
+<li><label for="first">First Name:</label></li>
+<li><input type="text" name="first" size="50" required/></li>
+<li><label for="last">Last Name:</label></li>
+<li><input type="text" name="last" size="50" required/></li>
+<li><label for="empid">Employee id:</label></li>
+<li><input type="text"name="empid" size="50"required/></li>
+<li><label for="birth">Birth of date:</label></li>
+<li><input type="date" id="birth" name="birth" ></li>
+<li><label for="address">Address:</label></li>
+<li><input type="text" name="address" id=""size="50" required/></li>
+<li><label for="country">Country:</label></li>
+<li><select name="country" required>
+<option selected="" value="Default">(Please select a country)</option>
+<option value="AF">Australia</option>
+<option value="AL">Canada</option>
+<option value="DZ">India</option>
+<option value="AS">Russia</option>
+<option value="AD">USA</option>
+</select></li>
+<li><label for="no">Contact no:</label></li>
+<li><input type="number" id="" name="no" required></li>
+<li><label for="jdate">Date of joining:</label></li>
+<li><input type="date" id="" name="jdate" ></li>
+<li><label for="email">Email:</label></li>
+<li><input type="text" name="email" size="50" required/></li>
+<li><label id="gender">Gender:</label></li>
+<li><input type="radio" name="male" value="Male" /><span>Male</span></li>
+<li><input type="radio" name="female" value="Female" /><span>Female</span></li>
+
+<li><input type="submit" name="submit" value="Submit" /></li>
+</ul>
+</form>
+</body>
+</html>
+
+assi2.css
+
+h1 {
+    margin-left: 35%;
+    }
+    form{
+
+        margin-left: 30%;
+    }
+    form li {
+    list-style: none;
+    margin-bottom: 5px;
+    }
+    
+    form ul li label{
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:14px;
+    }
+    
+    form ul li input, select, span {
+    float: left;
+    margin-bottom: 10px;
+    }
+    
+    form textarea {
+    float: left;
+    width: 350px;
+    height: 150px;
+    }
+    
+    [type="submit"] {
+    clear: left;
+    margin: 20px 0 0 230px;
+    font-size:18px
+    }
+    
+    p {
+    margin-left: 70px;
+    font-weight: bold;
+    }
+
+    assi2.js
+
+
+
+function formValidation() {
+    var first = document.registration.first;
+    var last = document.registration.last;
+    var empid = document.registration.empid;
+    var birth = document.registration.birth;
+    //var DOB = document.registration.birth;
+    var uadd = document.registration.address;
+    var ucountry = document.registration.country;
+    var no = document.registration.no;
+    var jdate = document.registration.jdate;
+    var uemail = document.registration.email;
+    var umgen = document.registration.male;
+    var ufgen = document.registration.female;
+
+    if (allLetter1(first)) {
+        if (allLetter2(last)) {
+            if (alid(empid)) {
+                if (allb(birth)) {
+                    if (aladd(uadd)) {
+                        if (countryselect(ucountry)) {
+                            if (allcontact(no)) {
+                                if (alljdate(jdate,birth)) {
+                                    if (ValidateEmail(uemail)) {
+                                        if (validgender(umgen, ufgen)) {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
+    return false;
+}
+function allLetter1(first) {
+    var letters = /^[A-Za-z]+$/;
+    if (first.value.match(letters)) {
+        //alert('employee name submitted');
+        return true;
+    }
+    else {
+        alert('employee first name must have alphabet characters only');
+        first.focus();
+        return false;
+    }
+}
+function allLetter2(last) {
+    var letters = /^[A-Za-z]+$/;
+    if (last.value.match(letters)) {
+        //  alert("employee name submitted");
+        return true;
+    }
+    else {
+        alert('employee last name must have alphabet characters only');
+        last.focus();
+        return false;
+    }
+}
+function alid(empid) {
+    var letters = /^[0-9a-zA-Z]+$/;
+    if (empid.value.match(letters)) {
+        // alert("employee id submitted");
+        return true;
+    }
+    else {
+        alert('employee id must have alphanumeric characters only');
+        uadd.focus();
+        return false;
+    }
+}
+function allb(birth) {
+    
+    
+    var birth_len = birth.value.length;
+    if (birth_len == 0) {
+        alert("birth date should not be empty");
+        birth.focus();
+        return false;
+    }
+    else {
+
+        let CurrentDate = new Date();
+        let birthDate = new Date(birth.value);
+        let diff = new Date(CurrentDate - birthDate)
+        let age = Math.abs(diff.getUTCFullYear() - 1970);
+     
+        //alert(age);
+    
+    
+
+        if (birthDate > CurrentDate) {
+            alert('Birth date is greater than the current date.');
+
+        } else if (age < 14) {
+            alert('You are not 14+ years old');
+           // alert('Given date is not greater than the current date.');
+          
+          
+        
+    }
+
+    // alert("birth of date submitted");
+    return true;
+}
+}
+function aladd(uadd) {
+    var letters = /^[0-9a-zA-Z]+$/;
+    if (uadd.value.match(letters)) {
+        //   alert("address submitted");
+        return true;
+    }
+    else {
+        alert('address must have alphanumeric characters only');
+        uadd.focus();
+        return false;
+    }
+}
+function countryselect(ucountry) {
+    if (ucountry.value == "Default") {
+        alert('Select your country from the list');
+        ucountry.focus();
+        return false;
+    }
+    else {
+        //   alert("country submitted");
+        return true;
+    }
+}
+function allcontact(no) {
+    var number = /^[0-9]+$/;
+    if (no.value.match(number)) {
+        // alert("Contact Number submitted");
+        return true;
+    }
+    else {
+        alert('Contact no must have numeric numbers only');
+        no.focus();
+        return false;
+    }
+}
+function alljdate(jdate,birth) {
+    var jdate_len = jdate.value.length;
+    if (jdate_len == 0) {
+        alert("date of joining should not be empty");
+        birthday.focus();
+        return false;
+    }
+    else {
+        let CurrentDate = new Date();
+        let jjdate= new Date(jdate.value);
+        let birthDate = new Date(birth.value);
+        let diff = new Date(jjdate - birthDate)
+        let age = Math.abs(diff.getUTCFullYear() - 1970);
+     
+
+        if (jjdate > CurrentDate) {
+            alert('Please select correct date');
+
+        } else if (age < 14) {
+            alert('You are not 14+ years old');
+           // alert('Given date is not greater than the current date.');
+          
+          
+        
+    }
+    }
+    // alert("date of joining submitted");
+    return true;
+}
+function ValidateEmail(uemail) {
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (uemail.value.match(mailformat)) {
+        // alert("email address is submitted");
+        return true;
+    }
+    else {
+        alert("You have entered an invalid email address!");
+        uemail.focus();
+        return false;
+    }
+}
+function validgender(umgen, ufgen) {
+    x = 0;
+    if (umgen.checked) {
+        x++;
+    } if (ufgen.checked) {
+        x++;
+    }
+    if (x == 0) {
+        alert('Select Male/Female');
+        umgen.focus();
+        return false;
+    }
+    else {
+        window.location.reload()
+        return true;
+    }
+}
+

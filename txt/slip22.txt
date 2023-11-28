@@ -1,0 +1,389 @@
+
+Q.1	Design simple HR Application using Spring Framework	[20 M]
+package hrapplication.controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import hrapplication.model.HrApplicationBean;
+import hrapplication.model.LoginBean;
+import hrapplication.service.HrApplicationService;
+import hrapplication.service.LoginService;
+
+
+@Controller
+@RequestMapping("/hrApplications")
+public class HrApplicationController {
+
+	@Autowired
+	private HrApplicationService hrApplicationService;
+	
+
+	@RequestMapping("/secure")
+	public String defaultPage(Model model) {
+		List<HrApplicationBean> hrApplications = hrApplicationService.getAllHrApplication();
+		model.addAttribute("hrApplications", hrApplications);
+		return "hrApplicationSecure";
+	}
+	
+	@RequestMapping("/all")
+	public String allHrApplications(Model model) {
+			
+		List<HrApplicationBean> hrApplications = hrApplicationService.getAllHrApplication();
+		model.addAttribute("hrApplications", hrApplications);
+		return "hrApplicationList";
+	}
+
+	@RequestMapping("/hrApplication")
+	public String getHrApplicationById(@RequestParam(name = "hrApplicationId") int hrApplicationId, Model model) {
+		HrApplicationBean hrApplication = hrApplicationService.getHrApplicationById(hrApplicationId);
+		model.addAttribute("hrApplication", hrApplication);
+		return "hrApplicationDetail";
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String addHrApplication(@ModelAttribute("newHrApplication") HrApplicationBean hrApplicationBean,BindingResult bindingResult) {
+	
+		return "hrApplicationAdd";
+	}
+	
+	@RequestMapping("/deleteHrApplication{hrApplicationId}")
+	public String deleteHrApplication(@RequestParam("hrApplicationId") int hrApplicationId, Model model) {
+		hrApplicationService.deleteHrApplication(hrApplicationId);
+		return "hrApplicationList";
+	}
+		
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveHrApplication(@ModelAttribute("newHrApplication") HrApplicationBean hrApplicationBean,BindingResult bindingResult) {
+	
+		hrApplicationService.addHrApplication(hrApplicationBean);
+		return "hrApplicationList";
+	}
+	
+}
+
+****appp***
+package hrapplication.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.ModelAndView;
+import hrapplication.model.ApplicantBean;
+import hrapplication.model.HrApplicationBean;
+import hrapplication.service.ApplicantService;
+import hrapplication.service.HrApplicationService;
+
+@Controller
+@RequestMapping("/applicants")
+public class ApplicantController {
+
+	@Autowired
+	private ApplicantService applicantService;
+	
+	@Autowired
+	private HrApplicationService hrApplicationService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView addApplicant(@ModelAttribute("newApplicant") ApplicantBean applicantBean,BindingResult bindingResult) {
+		Map<String, Object> model = new HashMap<String,Object>();
+		model.put("hrApplications",  hrApplicationService.getAllHrApplication());
+		return new ModelAndView("applicantAdd",model);
+	}
+    
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveApplicant(@ModelAttribute("newApplicant") ApplicantBean applicantBean,BindingResult bindingResult, HrApplicationBean hrApplicationBean){
+
+		applicantService.save(applicantBean);
+		applicantService.update(applicantBean,hrApplicationService.getAllHrApplicationId(hrApplicationBean));
+		
+		return "redirect:/hrApplications";
+	}
+	
+	
+	
+
+
+}
+
+
+***app***
+package hrapplication.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import hrapplication.model.LoginBean;
+import hrapplication.service.LoginService;
+
+@Controller
+public class LoginController {
+
+	@Autowired
+	private LoginService loginService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String defaultPage(LoginBean loginBean,BindingResult bindingResult) {
+		//start project
+			return "index";
+	}
+	
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public String addLogin(LoginBean loginBean,BindingResult bindingResult) {
+		loginService.addLogin(loginBean);
+		return "login";
+	}
+	
+	 @RequestMapping("/login")  
+	   public ModelAndView login(HttpServletRequest request,HttpServletResponse response,LoginBean loginBean,BindingResult bindingResult) {
+		  loginService.addLogin(loginBean);
+		  String loginEmail=request.getParameter("loginEmail");  
+		  String loginPassword=request.getParameter("loginPassword");
+	      String message;
+	      if(loginEmail != null && 
+	    		  !loginEmail.equals("") 
+	    		  && loginEmail.equals(loginBean.getLoginEmail()) && 
+	    		  loginPassword != null && 
+	    		  !loginPassword.equals("") && 
+	    		  loginPassword.equals(loginBean.getLoginPassword())){
+	    	  message = "Welcome " +loginEmail + ".";
+		      return new ModelAndView("hrApplicationList");  
+	 
+	      }else{
+	    	  message = "Wrong email or password.";
+	    	  return new ModelAndView("login", 
+	    			  "message", message);
+	      }
+	   }
+	
+	
+}
+
+
+Q.2	Write a Python program to prepare Scatter Plot for Iris Dataset	[20 M]
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+iris_data = pd.read_csv("iris2.csv")
+iris_data
+
+versicolor = iris_data[iris_data.variety == "Versicolor"]
+setosa = iris_data[iris_data.variety =="Setosa"]
+virginica = iris_data[iris_data.variety == "Virginica"]
+
+fig, ax = plt.subplots()
+fig.set_size_inches(8, 8)
+
+points = ax.scatter(versicolor["petal.length"], versicolor["petal.width"], label="Versicolor")
+
+points.set_facecolor("green")
+
+ax.scatter(setosa["petal.length"], setosa["petal.width"], label="Setosa", marker="x", facecolor="blue")
+ax.scatter(virginica["petal.length"], virginica["petal.width"], label="Virginica", marker="s", facecolor="red")
+
+ax.set_xlabel("Petal Length (cm)")
+ax.set_ylabel("Petal Width (cm)")
+ax.set_title("Iris Petal Sizes")
+ax.legend()
+
+
+
+Q.3	Design a Django application: An admin site that lets you add, change and delete programming languages.	[20 M
+
+
+
+***sir code***
+
+
+python manage.py migration
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+root folder is que4 in 2 folders
+1) que4
+
+urls.py
+from django.contrib import admin
+from django.urls import path , include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('myapp.urls')),
+]
+
+
+
+
+
+2) myapp (myapp is app folder) two folder
+
+admin.py
+from django.contrib import admin
+
+from .models import ProgrammingLanguage, Vote
+
+admin.site.register(ProgrammingLanguage)
+admin.site.register(Vote)
+
+forms.py
+from django import forms
+from .models import ProgrammingLanguage
+
+class VoteForm(forms.ModelForm):
+    class Meta:
+        model = ProgrammingLanguage
+        fields = ['name']
+        labels = {
+            'name': 'Number',  # Change the label for the 'name' field to 'Number'
+        }
+models.py
+from django.db import models
+
+class ProgrammingLanguage(models.Model):
+    name = models.CharField(max_length=100)
+
+class Vote(models.Model):
+    language = models.ForeignKey(ProgrammingLanguage, on_delete=models.CASCADE)
+
+
+
+apps.py
+from django.apps import AppConfig
+
+class MyappConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'myapp'
+
+
+urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('vote/', views.vote, name='vote'),
+    path('results/', views.results, name='results'),
+]
+
+
+
+views.py
+
+from django.shortcuts import render, redirect
+from .models import ProgrammingLanguage, Vote
+from .forms import VoteForm
+
+def vote(request):
+    if request.method == 'POST':
+        form = VoteForm(request.POST)
+        if form.is_valid():
+            language_id = form.cleaned_data['name']
+            programming_language = ProgrammingLanguage.objects.get(pk=language_id)
+            Vote.objects.create(language=programming_language)
+            return redirect('results')
+    else:
+        form = VoteForm()
+
+    return render(request, 'myapp/vote.html', {'form': form})
+
+def results(request):
+    languages = ProgrammingLanguage.objects.all()
+    return render(request, 'myapp/results.html', {'languages': languages})
+
+
+
+1)migration is present in myapp
+
+0001_initial.py
+# Generated by Django 4.1.5 on 2023-10-27 18:07
+
+from django.db import migrations, models
+import django.db.models.deletion
+
+
+class Migration(migrations.Migration):
+
+    initial = True
+
+    dependencies = [
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='ProgrammingLanguage',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=100)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Vote',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('language', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.programminglanguage')),
+            ],
+        ),
+    ]
+
+2) template (this folder present in myapp folder)
+1)myapp this folder in template folder
+
+results.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Poll Results</title>
+</head>
+<body>
+    <h1>Poll Results</h1>
+    <ul>
+        {% for language in languages %}
+            <li>{{ language.name }} - Votes: {{ language.vote_set.count }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'vote' %}">Back to Voting</a>
+</body>
+</html>
+
+vote.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote for Your Favorite Programming Language</title>
+</head>
+<body>
+    <h1>Vote for Your Favorite Programming Language</h1>
+    <h2>1. Python </h2>
+    <h2>2. C++ </h2>
+    <h2>3. Java </h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Vote">
+    </form>
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+Q.1	 Write a Java Program to implement Decorator Pattern for interface Car to define the assemble() method and then decorate it to Sports car and Luxury Car	[20 M]
+
+class BasicCar implements Car {
+	@Override
+	public void assemble() {
+		System.out.print("Basic Car.");
+	}
+}
+
+
+ interface Car {
+	public void assemble();
+}
+
+
+ class CarDecorator implements Car {
+	protected Car car;
+	public CarDecorator(Car c){
+		this.car=c;
+	}
+	
+	@Override
+	public void assemble() {
+		this.car.assemble();
+	}
+}
+
+
+ class LuxuryCar extends CarDecorator {
+
+	public LuxuryCar(Car c) {
+		super(c);
+	}
+	@Override
+	public void assemble(){
+		super.assemble();
+		System.out.print(" Adding features of Luxury Car.");
+	}
+}
+
+
+ class SportsCar extends CarDecorator {
+	public SportsCar(Car c) {
+		super(c);
+	}
+	@Override
+	public void assemble(){
+		super.assemble();
+		System.out.print(" Adding features of Sports Car.");
+	}
+}
+
+
+
+public class slip12 {
+
+	public static void main(String[] args) {
+		Car sportsCar = new SportsCar(new BasicCar());
+		sportsCar.assemble();
+		System.out.println("\n*****");
+		
+		Car sportsLuxuryCar = new SportsCar(new LuxuryCar(new BasicCar()));
+		sportsLuxuryCar.assemble();
+	}
+
+}
+
+Q. 2 Write a python program to make Categorical values in numeric format for a given dataset	[20 M]
+
+***sir code **
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+
+df = pd.read_csv("forestfires.csv")
+df.sample(5)
+
+label_encoder = LabelEncoder()
+df["Numneric_month"] = label_encoder.fit_transform(df["month"])
+df["Numneric_day"] = label_encoder.fit_transform(df["day"])
+df.sample(5)
+
+df.to_csv('encoded_dataset.csv', index=False)
+
+
+****my code***
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+
+df = pd.read_csv('jamesbond.csv')
+ 
+#printing DataFrame
+df
+
+
+# Creating a instance of label Encoder.
+le = LabelEncoder()
+ 
+# Using .fit_transform function to fit label
+# encoder and return encoded label
+label = le.fit_transform(df['show'])
+ 
+# printing label
+label
+
+df.drop("show", axis=1, inplace=True)
+ 
+# Appending the array to our dataFrame
+# with column name 'Purchased'
+df["show"] = label
+ 
+# printing Dataframe
+df
+
+Q.3	Create a Simple Web Server using node js.	[20 M]
+var http = require('http'); 
+
+var server = http.createServer(function (req, res) {  
+
+res.write("<h1 style='background-color:green'>create server successfully</h1>");
+res.end();
+
+});
+
+server.listen(8002); 
+console.log('Node.js web server at port 8002 is running..')
+

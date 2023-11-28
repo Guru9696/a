@@ -1,0 +1,254 @@
+Q.1	Write a Java Program to implement I/O Decorator for converting uppercase letters to lower case letters.	[20 M]
+
+
+import java.io.*;
+import java.util.*;
+
+class LowerCaseInputStream extends FilterInputStream
+{
+        public LowerCaseInputStream(InputStream in)
+        {
+                super(in);
+        }
+        public int read() throws IOException
+        {
+                int c=super.read();
+                return (c==-1?c:Character.toLowerCase((char)c));
+        }
+        public int read(byte[] b,int offset,int len) throws IOException
+        {
+                int result =super.read(b,offset,len);
+                for (int i=offset;i<offset+result;i++)
+                {
+                        b[i]=(byte)Character.toLowerCase((char)b[i]);
+                }
+                return result;
+        }
+}
+public class slip1_20
+{
+        public static void main(String[] args) throws IOException
+        {
+        int c;
+        try
+        {
+
+InputStream in =new LowerCaseInputStream(new BufferedInputStream(new 	    	        FileInputStream("a.txt")));
+                while((c = in.read()) >= 0)
+                {
+                        System.out.print((char)c);
+                       
+                }
+                System.out.println();
+                in.close();
+        }
+        catch(IOException e)
+        {
+                e.printStackTrace();
+        }
+     }
+}
+
+
+
+
+
+Q.2	Write a Python program to prepare Scatter Plot for Iris Dataset	[20 M]
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+iris_data = pd.read_csv("iris2.csv")
+iris_data
+
+versicolor = iris_data[iris_data.variety == "Versicolor"]
+setosa = iris_data[iris_data.variety =="Setosa"]
+virginica = iris_data[iris_data.variety == "Virginica"]
+
+fig, ax = plt.subplots()
+fig.set_size_inches(8, 8)
+
+points = ax.scatter(versicolor["petal.length"], versicolor["petal.width"], label="Versicolor")
+
+points.set_facecolor("green")
+
+ax.scatter(setosa["petal.length"], setosa["petal.width"], label="Setosa", marker="x", facecolor="blue")
+ax.scatter(virginica["petal.length"], virginica["petal.width"], label="Virginica", marker="s", facecolor="red")
+
+ax.set_xlabel("Petal Length (cm)")
+ax.set_ylabel("Petal Width (cm)")
+ax.set_title("Iris Petal Sizes")
+ax.legend()
+
+
+
+Q.3	Create an HTML form that contain the Student Registration details and write a JavaScript to validate Student first and last name as it should not contain other than alphabets and age should be between 18 to 50.
+
+assi1.html 
+
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>JavaScript Form Validation using a sample Employee registration form</title>
+<meta name="keywords" content="example, JavaScript Form Validation, Sample registration form" />
+<meta name="description" content="This document is an example of JavaScript Form Validation using a sample registration form. " />
+<link rel='stylesheet' href='assi1.css' type='text/css' />
+<script src="assi1.js">
+</script>
+</head>
+<body onload="document.registration.userid.focus();"bgcolor="orange">
+<h1>Student Registration Form</h1>
+<form name='registration' onSubmit="return formValidation();">
+<ul>
+<li><label for="first">First Name:</label></li>
+<li><input type="text" name="first" size="50" required/></li>
+<li><label for="last">Last Name:</label></li>
+<li><input type="text" name="last" size="50" required/></li>
+
+<li><label for="birth">Birth of date:</label></li>
+<li><input type="date" id="birth" name="birth" ></li>
+
+
+<li><input type="submit" name="submit" value="Submit" /></li>
+</ul>
+</form>
+</body>
+</html>
+
+assi1.css
+
+h1 {
+    margin-left: 35%;
+    }
+    form{
+
+        margin-left: 30%;
+    }
+    form li {
+    list-style: none;
+    margin-bottom: 5px;
+    }
+    
+    form ul li label{
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+    font-size:14px;
+    }
+    
+    form ul li input, select, span {
+    float: left;
+    margin-bottom: 10px;
+    }
+    
+    form textarea {
+    float: left;
+    width: 350px;
+    height: 150px;
+    }
+    
+    [type="submit"] {
+    clear: left;
+    margin: 20px 0 0 230px;
+    font-size:18px
+    }
+    
+    p {
+    margin-left: 70px;
+    font-weight: bold;
+    }
+
+assi1.js
+
+
+
+
+
+function formValidation() {
+    var first = document.registration.first;
+    var last = document.registration.last;
+
+    var birth = document.registration.birth;
+    var submit = document.registration.submit;
+
+
+    if (allLetter1(first)) {
+        if (allLetter2(last)) {
+
+            if (allb(birth)) {
+                if (sub(submit)) {
+
+                }
+            }
+
+        }
+    }
+    return false;
+}
+function allLetter1(first) {
+    var letters = /^[A-Za-z]+$/;
+    if (first.value.match(letters)) {
+        //alert('employee name submitted');
+        return true;
+    }
+    else {
+        alert('employee first name must have alphabet characters only');
+        first.focus();
+        return false;
+    }
+}
+function allLetter2(last) {
+    var letters = /^[A-Za-z]+$/;
+    if (last.value.match(letters)) {
+        //  alert("employee name submitted");
+        return true;
+    }
+    else {
+        alert('employee last name must have alphabet characters only');
+        last.focus();
+        return false;
+    }
+}
+
+function allb(birth) {
+
+
+    var birth_len = birth.value.length;
+    if (birth_len == 0) {
+        alert("birth date should not be empty");
+        birth.focus();
+        return false;
+    }
+    else {
+
+        let CurrentDate = new Date();
+        let birthDate = new Date(birth.value);
+        let diff = new Date(CurrentDate - birthDate)
+        let age = Math.abs(diff.getUTCFullYear() - 1970);
+
+        if (age >= 18 && age <= 50) {
+            alert('Birth date is between the 18 to 50 ');
+            if (submit.onClick()) {
+                return true;
+            }
+
+
+        } else {
+            alert('Birth date not between the 18 to 50');
+            return false;
+
+
+        }
+
+        return true;
+    }
+}
+
+
+
+
+
+    

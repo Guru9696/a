@@ -1,0 +1,467 @@
+
+Q.1	Write a Java Program to implement Iterator Pattern for Designing Menu like Breakfast, Lunch or Dinner Menu	[20 M]
+
+import java.util.*;
+import java.util.Iterator;
+import java.util.ArrayList;
+
+
+ interface Menu 
+{
+public Iterator<MenuItem> createIterator();
+}
+
+
+class CafeMenu implements Menu 
+{
+HashMap<String, MenuItem> menuItems = new HashMap<String, MenuItem>();
+public CafeMenu() 
+{
+addItem("Veggie Burger and French Fries","Veggie burger on a whole wheat bun, lettuce, tomato, and fries",true, 40);
+addItem("Soup of the day","A cup of the soup of the day, with a side salad",false, 70);
+addItem("Burrito","A large burrito, with whole pinto beans, salsa, guacamole",true, 80);
+}
+public void addItem(String name, String description,boolean vegetarian, double price) 
+{
+MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+menuItems.put(name, menuItem);
+}
+public Map<String, MenuItem> getItems()
+{
+return menuItems;
+}
+public Iterator<MenuItem> createIterator() 
+{
+return menuItems.values().iterator();
+}
+}
+
+
+
+
+ class DinerMenu implements Menu 
+{
+static final int MAX_ITEMS = 6;
+int numberOfItems = 0;
+MenuItem[] menuItems;
+
+public DinerMenu() 
+{
+menuItems = new MenuItem[MAX_ITEMS];
+addItem("Vegetarian BLT","(Fakin') Bacon with lettuce & tomato on whole wheat", true, 80);
+addItem("BLT","Bacon with lettuce & tomato on whole wheat", false, 90);
+addItem("Soup of the day","Soup of the day, with a side of potato salad", false, 70);
+addItem("Hotdog","A hot dog, with sauerkraut, relish, onions, topped with cheese",false, 60);
+addItem("Steamed Veggies and Brown Rice","A medly of steamed vegetables over brown rice", true, 99);
+addItem("Pasta","Spaghetti with Marinara Sauce, and a slice of sourdough bread",true, 89);
+}
+public void addItem(String name, String description,boolean vegetarian, double price) 
+{
+MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+if (numberOfItems >= MAX_ITEMS) 
+{
+System.err.println("Sorry, menu is full!  Can't add item to menu");		
+} 
+else 
+{
+menuItems[numberOfItems] = menuItem;
+numberOfItems = numberOfItems + 1;
+}
+}
+public MenuItem[] getMenuItems() 
+{
+return menuItems;
+}
+public Iterator<MenuItem> createIterator() 
+{
+return new DinerMenuIterator(menuItems);
+//return new AlternatingDinerMenuIterator(menuItems);
+}
+// other menu methods here
+}
+
+
+
+ class DinerMenuIterator implements Iterator<MenuItem> {
+	MenuItem[] list;
+	int position = 0;
+
+	public DinerMenuIterator(MenuItem[] list) {
+		this.list = list;
+	}
+
+	public MenuItem next() {
+		MenuItem menuItem = list[position];
+		position = position + 1;
+		return menuItem;
+	}
+
+	public boolean hasNext() {
+		if (position >= list.length || list[position] == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void remove() {
+		if (position <= 0) {
+			throw new IllegalStateException
+				("You can't remove an item until you've done at least one next()");
+		}
+		if (list[position-1] != null) {
+			for (int i = position-1; i < (list.length-1); i++) {
+				list[i] = list[i+1];
+			}
+			list[list.length-1] = null;
+		}
+	}
+}
+
+
+ class MenuItem {
+	String name;
+	String description;
+	boolean vegetarian;
+	double price;
+
+	public MenuItem(String name, 
+	                String description, 
+	                boolean vegetarian, 
+	                double price) 
+	{
+		this.name = name;
+		this.description = description;
+		this.vegetarian = vegetarian;
+		this.price = price;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public boolean isVegetarian() {
+		return vegetarian;
+	}
+}
+
+
+public class slip24 {
+	public static void main(String args[]) {
+		PancakeHouseMenu pancakeHouseMenu = new PancakeHouseMenu();
+		DinerMenu dinerMenu = new DinerMenu();
+		CafeMenu cafeMenu = new CafeMenu();
+
+		Waitress waitress = new Waitress(pancakeHouseMenu, dinerMenu, cafeMenu);
+
+		waitress.printMenu();
+		waitress.printVegetarianMenu();
+
+		System.out.println("\nCustomer asks, is the Hotdog vegetarian?");
+		System.out.print("Waitress says: ");
+		if (waitress.isItemVegetarian("Hotdog")) {
+			System.out.println("Yes");
+		} else {
+			System.out.println("No");
+		}
+		System.out.println("\nCustomer asks, are the Waffles vegetarian?");
+		System.out.print("Waitress says: ");
+		if (waitress.isItemVegetarian("Waffles")) {
+			System.out.println("Yes");
+		} else {
+			System.out.println("No");
+		}
+	}
+}
+
+
+
+ class PancakeHouseMenu implements Menu {
+	ArrayList<MenuItem> menuItems;
+
+	public PancakeHouseMenu() {
+		menuItems = new ArrayList<MenuItem>();
+
+		addItem("K&B's Pancake Breakfast", 
+			"Pancakes with scrambled eggs and toast", 
+			true,
+			90);
+
+		addItem("Regular Pancake Breakfast", 
+			"Pancakes with fried eggs, sausage", 
+			false,
+			80);
+
+		addItem("Blueberry Pancakes",
+			"Pancakes made with fresh blueberries and blueberry syrup",
+			true,
+			60);
+
+		addItem("Waffles",
+			"Waffles with your choice of blueberries or strawberries",
+			true,
+			70);
+	}
+
+	public void addItem(String name, String description,
+	                    boolean vegetarian, double price)
+	{
+		MenuItem menuItem = new MenuItem(name, description, vegetarian, price);
+		menuItems.add(menuItem);
+	}
+
+	public ArrayList<MenuItem> getMenuItems() {
+		return menuItems;
+	}
+
+	public Iterator<MenuItem> createIterator() {
+		return menuItems.iterator();
+	}
+
+	// other menu methods here
+}
+
+
+
+ class Waitress {
+	Menu pancakeHouseMenu;
+	Menu dinerMenu;
+	Menu cafeMenu;
+
+	public Waitress(Menu pancakeHouseMenu, Menu dinerMenu, Menu cafeMenu) {
+		this.pancakeHouseMenu = pancakeHouseMenu;
+		this.dinerMenu = dinerMenu;
+		this.cafeMenu = cafeMenu;
+	}
+
+	public void printMenu() {
+		Iterator<MenuItem> pancakeIterator = pancakeHouseMenu.createIterator();
+		Iterator<MenuItem> dinerIterator = dinerMenu.createIterator();
+		Iterator<MenuItem> cafeIterator = cafeMenu.createIterator();
+
+		System.out.println("MENU\n----\nBREAKFAST");
+		printMenu(pancakeIterator);
+		System.out.println("\nLUNCH");
+		printMenu(dinerIterator);
+		System.out.println("\nDINNER");
+		printMenu(cafeIterator);
+	}
+
+	private void printMenu(Iterator<MenuItem> iterator) {
+		while (iterator.hasNext()) {
+			MenuItem menuItem = iterator.next();
+			System.out.print(menuItem.getName() + ", ");
+			System.out.print(menuItem.getPrice() + " -- ");
+			System.out.println(menuItem.getDescription());
+		}
+	}
+
+	public void printVegetarianMenu() {
+		System.out.println("\nVEGETARIAN MENU\n---------------");
+		printVegetarianMenu(pancakeHouseMenu.createIterator());
+		printVegetarianMenu(dinerMenu.createIterator());
+		printVegetarianMenu(cafeMenu.createIterator());
+	}
+
+	public boolean isItemVegetarian(String name) {
+		Iterator<MenuItem> pancakeIterator = pancakeHouseMenu.createIterator();
+		if (isVegetarian(name, pancakeIterator)) {
+			return true;
+		}
+		Iterator<MenuItem> dinerIterator = dinerMenu.createIterator();
+		if (isVegetarian(name, dinerIterator)) {
+			return true;
+		}
+		Iterator<MenuItem> cafeIterator = cafeMenu.createIterator();
+		if (isVegetarian(name, cafeIterator)) {
+			return true;
+		}
+		return false;
+	}
+
+
+	private void printVegetarianMenu(Iterator<MenuItem> iterator) {
+		while (iterator.hasNext()) {
+			MenuItem menuItem = iterator.next();
+			if (menuItem.isVegetarian()) {
+				System.out.print(menuItem.getName() + ", ");
+				System.out.print(menuItem.getPrice() + " -- ");
+				System.out.println(menuItem.getDescription());
+			}
+		}
+	}
+
+	private boolean isVegetarian(String name, Iterator<MenuItem> iterator) {
+		while (iterator.hasNext()) {
+			MenuItem menuItem = iterator.next();
+			if (menuItem.getName().equals(name)) {
+				if (menuItem.isVegetarian()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+}
+
+ class MenuTestDrive {
+	public static void main(String args[]) {
+		PancakeHouseMenu pancakeHouseMenu = new PancakeHouseMenu();
+		DinerMenu dinerMenu = new DinerMenu();
+		CafeMenu cafeMenu = new CafeMenu();
+
+		Waitress waitress = new Waitress(pancakeHouseMenu, dinerMenu, cafeMenu);
+
+		waitress.printMenu();
+		waitress.printVegetarianMenu();
+
+		System.out.println("\nCustomer asks, is the Hotdog vegetarian?");
+		System.out.print("Waitress says: ");
+		if (waitress.isItemVegetarian("Hotdog")) {
+			System.out.println("Yes");
+		} else {
+			System.out.println("No");
+		}
+		System.out.println("\nCustomer asks, are the Waffles vegetarian?");
+		System.out.print("Waitress says: ");
+		if (waitress.isItemVegetarian("Waffles")) {
+			System.out.println("Yes");
+		} else {
+			System.out.println("No");
+		}
+	}
+}
+
+
+Q.2.	Write a python program to make Categorical values in numeric format for a given dataset	[20 M]
+***sir code **
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+
+df = pd.read_csv("forestfires.csv")
+df.sample(5)
+
+label_encoder = LabelEncoder()
+df["Numneric_month"] = label_encoder.fit_transform(df["month"])
+df["Numneric_day"] = label_encoder.fit_transform(df["day"])
+df.sample(5)
+
+df.to_csv('encoded_dataset.csv', index=False)
+
+
+****my code***
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+
+df = pd.read_csv('jamesbond.csv')
+ 
+#printing DataFrame
+df
+
+
+# Creating a instance of label Encoder.
+le = LabelEncoder()
+ 
+# Using .fit_transform function to fit label
+# encoder and return encoded label
+label = le.fit_transform(df['show'])
+ 
+# printing label
+label
+
+df.drop("show", axis=1, inplace=True)
+ 
+# Appending the array to our dataFrame
+# with column name 'Purchased'
+df["show"] = label
+ 
+# printing Dataframe
+df
+
+Q.3	Implement Login System using Django.	[20 M]
+
+
+***my code***
+
+root folder is assi1 in 2 folders
+1) assi1
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+
+
+urlpatterns = [
+    path('', index, name='index'),
+
+]
+
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+
+
+views.py
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+
+<html>
+<head>
+<title>User login page</title>
+<head>
+    <script>
+          function f(){
+                var validRegex =/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+                var email=document.getElementById("email").value;
+                if(!validRegex.test(email))
+                    alert("Invalid Email!");
+                 else
+                    alert("submitted succesfully");
+                return false;
+         }
+    </script>
+</head>
+<body>
+    <form name="login" onsubmit="f()">
+    <h1>Login here</h1>
+    email id:<input type="text" id="email"/><br><br>
+    password:<input type="password" id="password"><br><br>
+    <input type="submit" id="submit" value="submit">
+    </form>
+</body>
+</html>
+
+
+

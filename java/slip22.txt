@@ -1,0 +1,180 @@
+
+package hrapplication.controller;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import hrapplication.model.HrApplicationBean;
+import hrapplication.model.LoginBean;
+import hrapplication.service.HrApplicationService;
+import hrapplication.service.LoginService;
+
+
+@Controller
+@RequestMapping("/hrApplications")
+public class HrApplicationController {
+
+	@Autowired
+	private HrApplicationService hrApplicationService;
+	
+
+	@RequestMapping("/secure")
+	public String defaultPage(Model model) {
+		List<HrApplicationBean> hrApplications = hrApplicationService.getAllHrApplication();
+		model.addAttribute("hrApplications", hrApplications);
+		return "hrApplicationSecure";
+	}
+	
+	@RequestMapping("/all")
+	public String allHrApplications(Model model) {
+			
+		List<HrApplicationBean> hrApplications = hrApplicationService.getAllHrApplication();
+		model.addAttribute("hrApplications", hrApplications);
+		return "hrApplicationList";
+	}
+
+	@RequestMapping("/hrApplication")
+	public String getHrApplicationById(@RequestParam(name = "hrApplicationId") int hrApplicationId, Model model) {
+		HrApplicationBean hrApplication = hrApplicationService.getHrApplicationById(hrApplicationId);
+		model.addAttribute("hrApplication", hrApplication);
+		return "hrApplicationDetail";
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String addHrApplication(@ModelAttribute("newHrApplication") HrApplicationBean hrApplicationBean,BindingResult bindingResult) {
+	
+		return "hrApplicationAdd";
+	}
+	
+	@RequestMapping("/deleteHrApplication{hrApplicationId}")
+	public String deleteHrApplication(@RequestParam("hrApplicationId") int hrApplicationId, Model model) {
+		hrApplicationService.deleteHrApplication(hrApplicationId);
+		return "hrApplicationList";
+	}
+		
+	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveHrApplication(@ModelAttribute("newHrApplication") HrApplicationBean hrApplicationBean,BindingResult bindingResult) {
+	
+		hrApplicationService.addHrApplication(hrApplicationBean);
+		return "hrApplicationList";
+	}
+	
+}
+
+****appp***
+package hrapplication.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.ModelAndView;
+import hrapplication.model.ApplicantBean;
+import hrapplication.model.HrApplicationBean;
+import hrapplication.service.ApplicantService;
+import hrapplication.service.HrApplicationService;
+
+@Controller
+@RequestMapping("/applicants")
+public class ApplicantController {
+
+	@Autowired
+	private ApplicantService applicantService;
+	
+	@Autowired
+	private HrApplicationService hrApplicationService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView addApplicant(@ModelAttribute("newApplicant") ApplicantBean applicantBean,BindingResult bindingResult) {
+		Map<String, Object> model = new HashMap<String,Object>();
+		model.put("hrApplications",  hrApplicationService.getAllHrApplication());
+		return new ModelAndView("applicantAdd",model);
+	}
+    
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String saveApplicant(@ModelAttribute("newApplicant") ApplicantBean applicantBean,BindingResult bindingResult, HrApplicationBean hrApplicationBean){
+
+		applicantService.save(applicantBean);
+		applicantService.update(applicantBean,hrApplicationService.getAllHrApplicationId(hrApplicationBean));
+		
+		return "redirect:/hrApplications";
+	}
+	
+	
+	
+
+
+}
+
+
+***app***
+package hrapplication.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import hrapplication.model.LoginBean;
+import hrapplication.service.LoginService;
+
+@Controller
+public class LoginController {
+
+	@Autowired
+	private LoginService loginService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String defaultPage(LoginBean loginBean,BindingResult bindingResult) {
+		//start project
+			return "index";
+	}
+	
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public String addLogin(LoginBean loginBean,BindingResult bindingResult) {
+		loginService.addLogin(loginBean);
+		return "login";
+	}
+	
+	 @RequestMapping("/login")  
+	   public ModelAndView login(HttpServletRequest request,HttpServletResponse response,LoginBean loginBean,BindingResult bindingResult) {
+		  loginService.addLogin(loginBean);
+		  String loginEmail=request.getParameter("loginEmail");  
+		  String loginPassword=request.getParameter("loginPassword");
+	      String message;
+	      if(loginEmail != null && 
+	    		  !loginEmail.equals("") 
+	    		  && loginEmail.equals(loginBean.getLoginEmail()) && 
+	    		  loginPassword != null && 
+	    		  !loginPassword.equals("") && 
+	    		  loginPassword.equals(loginBean.getLoginPassword())){
+	    	  message = "Welcome " +loginEmail + ".";
+		      return new ModelAndView("hrApplicationList");  
+	 
+	      }else{
+	    	  message = "Wrong email or password.";
+	    	  return new ModelAndView("login", 
+	    			  "message", message);
+	      }
+	   }
+	
+	
+}

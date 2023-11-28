@@ -1,0 +1,327 @@
+
+Q.1	Write a JAVA Program to implement built-in support (java.util.Observable) Weather station with members temperature, humidity, pressure and methods mesurmentsChanged(), setMesurment(), getTemperature(), getHumidity(),
+	getPressure()	[20 M]
+	
+import java.util.*;
+
+interface Observer {
+    public void update(float temp, float humidity, float pressure);
+}
+
+interface DisplayElement {
+    public void display();
+}
+
+interface Subject {
+    public void registerObserver(Observer o);
+
+    public void removeObserver(Observer o);
+
+    public void notifyObservers();
+}
+
+class WeatherData implements Subject {
+    private ArrayList<Observer> observers;
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherData() {
+        observers = new ArrayList<>();
+    }
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        int i = observers.indexOf(o);
+        if (i >= 0) {
+            observers.remove(i);
+        }
+    }
+
+    public void notifyObservers() {
+        for (int i = 0; i < observers.size(); i++) {
+            Observer observer = (Observer) observers.get(i);
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+
+    public void measurementsChanged() {
+        notifyObservers();
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+}
+
+class ForecastDisplay implements Observer, DisplayElement {
+    private float currentPressure = 29.92f;
+    private float lastPressure;
+    private WeatherData weatherData;
+
+    public ForecastDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temp, float humidity, float pressure) {
+        lastPressure = currentPressure;
+        currentPressure = pressure;
+
+        display();
+    }
+
+    public void display() {
+        System.out.print("Forecast: ");
+        if (currentPressure > lastPressure) {
+            System.out.println("Improving weather on the way!");
+        } else if (currentPressure == lastPressure) {
+            System.out.println("More of the same");
+        } else if (currentPressure < lastPressure) {
+            System.out.println("Watch out for cooler weather, rainy weather");
+        }
+    }
+}
+
+class HeatIndexDisplay implements Observer, DisplayElement {
+    float heatIndex = 0.0f;
+    private WeatherData weatherData;
+
+    public HeatIndexDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float t, float rh, float pressure) {
+        heatIndex = computeHeatIndex(t, rh);
+        display();
+    }
+
+    private float computeHeatIndex(float t, float rh) {
+        float index = (float) ((16.923 + (0.185212 * t) + (5.37941 * rh) - (0.100254 * t * rh)
+                + (0.00941695 * (t * t)) + (0.00728898 * (rh * rh))
+                + (0.000345372 * (t * t * rh)) - (0.000814971 * (t * rh * rh)) +
+                (0.0000102102 * (t * t * rh * rh)) - (0.000038646 * (t * t * t)) + (0.0000291583 *
+                        (rh * rh * rh))
+                + (0.00000142721 * (t * t * t * rh)) +
+                (0.000000197483 * (t * rh * rh * rh)) - (0.0000000218429 * (t * t * t * rh * rh)) +
+                0.000000000843296 * (t * t * rh * rh * rh)) -
+                (0.0000000000481975 * (t * t * t * rh * rh * rh)));
+        return index;
+    }
+
+    public void display() {
+        System.out.println("Heat index is " + heatIndex);
+    }
+}
+
+class StatisticsDisplay implements Observer, DisplayElement {
+    private float maxTemp = 0.0f;
+    private float minTemp = 200;
+    private float tempSum = 0.0f;
+    private int numReadings;
+    private WeatherData weatherData;
+
+    public StatisticsDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temp, float humidity, float pressure) {
+        tempSum += temp;
+        numReadings++;
+
+        if (temp > maxTemp) {
+            maxTemp = temp;
+        }
+
+        if (temp < minTemp) {
+            minTemp = temp;
+        }
+
+        display();
+    }
+
+    public void display() {
+        System.out.println("Avgerage/Maximum/Minimum temperature = " + (tempSum / numReadings)
+                + "/" + maxTemp + "/" + minTemp);
+    }
+}
+
+class CurrentConditionsDisplay implements Observer, DisplayElement {
+    private float temperature;
+    private float humidity;
+    private Subject weatherData;
+
+    public CurrentConditionsDisplay(Subject weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        display();
+    }
+
+    public void display() {
+        System.out.println("Current conditions: " + temperature
+                + "F degrees and " + humidity + "% humidity");
+    }
+}
+//weather.java main file
+class  slip3_18_28{
+
+    public static void main(String[] args) {
+        WeatherData weatherData = new WeatherData();
+
+        CurrentConditionsDisplay currentDisplay = new CurrentConditionsDisplay(weatherData);
+        StatisticsDisplay statisticsDisplay = new StatisticsDisplay(weatherData);
+        ForecastDisplay forecastDisplay = new ForecastDisplay(weatherData);
+
+        weatherData.setMeasurements(70, 55, 40.4f);
+        weatherData.setMeasurements(72, 60, 39.2f);
+        weatherData.setMeasurements(68, 80, 39.2f);
+    }
+}
+
+Q.2.	Write a python program to implement Naive Bayes.	[20 M]
+***sir code***
+#Naive Bayes
+import pandas as pd
+
+df=pd.read_csv("Titanic-Dataset.csv")
+df.head(1)
+
+df=df.drop(['PassengerId','Name','SibSp','Parch','Embarked','Cabin','Ticket'], axis='columns')
+df.head()
+
+from sklearn.preprocessing import LabelEncoder
+label = LabelEncoder()
+df['Gender'] = label.fit_transform(df['Gender'])
+df.head()
+
+input=df.drop(['Survived'],axis='columns')
+input.head()
+
+target=df['Survived']
+target.head()
+
+input.columns[input.isna().any()]
+input
+
+input.Age = input.Age.fillna(input.Age.mean())
+input
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(input,target,test_size=0.2)
+len(y_test)
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(x_train,y_train)
+
+model.score(x_test,y_test)
+
+x_test[:10]
+
+y_test[:10]
+
+model.predict(x_test[:10])
+
+
+Q.3	Create your own blog using Django	[20 M]
+
+***my code***
+
+root folder is assi1 in 2 folders
+1) assi1
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+
+
+urlpatterns = [
+    path('', index, name='index'),
+
+]
+
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+
+
+views.py
+from django.shortcuts import render
+
+# Create your views here.
+def index(request):
+    return render(request, 'index.html')
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<div class="header">
+  <h2>Welcome to my Blog</h2>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>Django</h2>
+      <h5>MSc. Computer Science Part 2</h5>
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="card">
+      <h2>Subjects :</h3>
+      <h4>SADP</h6>
+      <h4>Web Frameworks</h6>
+      <h4>Machine Learning</h6>
+      </div>
+  </div>
+</div>
+</body>
+</html>
+
+

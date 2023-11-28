@@ -1,0 +1,500 @@
+Q.1	Write a Java Program to implement Factory method for Pizza Store with createPizza(), orederPizza(), prepare(), Bake(), cut(), box(). Use this to create variety of pizza’s
+	like NyStyleCheesePizza, ChicagoStyleCheesePizza etc.	[20 M]
+	
+import java.util.ArrayList; 
+class ChicagoPizzaStore extends PizzaStore 
+{Pizza createPizza(String item) 
+{if (item.equals("cheese")) 
+{return new ChicagoStyleCheesePizza(); 
+} 
+else if (item.equals("veggie")) 
+{return new ChicagoStyleVeggiePizza(); 
+} 
+else if (item.equals("clam")) 
+{return new ChicagoStyleClamPizza(); 
+} 
+else if (item.equals("pepperoni")) 
+{return new ChicagoStylePepperoniPizza(); 
+} 
+else return null; 
+}} 
+class ChicagoStyleCheesePizza extends Pizza 
+{public ChicagoStyleCheesePizza() 
+{ 
+name = "Chicago Style Deep Dish Cheese Pizza"; 
+dough = "Extra Thick Crust Dough"; 
+sauce = "Plum Tomato Sauce"; 
+toppings.add("Shredded Mozzarella Cheese"); 
+}
+
+void cut() 
+{System.out.println("Cutting the pizza into square slices"); 
+}} 
+class ChicagoStyleClamPizza extends Pizza 
+{public ChicagoStyleClamPizza() 
+{ 
+name = "Chicago Style Clam Pizza"; 
+dough = "Extra Thick Crust Dough"; 
+sauce = "Plum Tomato Sauce"; 
+toppings.add("Shredded Mozzarella Cheese"); 
+toppings.add("Frozen Clams from Chesapeake Bay"); 
+} 
+void cut() 
+{System.out.println("Cutting the pizza into square slices"); 
+}} 
+class ChicagoStylePepperoniPizza extends Pizza 
+{public ChicagoStylePepperoniPizza() 
+{ 
+name = "Chicago Style Pepperoni Pizza"; 
+dough = "Extra Thick Crust Dough"; 
+sauce = "Plum Tomato Sauce"; 
+toppings.add("Shredded Mozzarella Cheese"); 
+toppings.add("Black Olives"); 
+toppings.add("Spinach"); 
+toppings.add("Eggplant"); 
+toppings.add("Sliced Pepperoni"); 
+} 
+void cut() 
+{System.out.println("Cutting the pizza into square slices"); 
+}} 
+class ChicagoStyleVeggiePizza extends Pizza 
+{public ChicagoStyleVeggiePizza() 
+{name = "Chicago Deep Dish Veggie Pizza"; 
+dough = "Extra Thick Crust Dough"; 
+sauce = "Plum Tomato Sauce"; 
+toppings.add("Shredded Mozzarella Cheese"); 
+toppings.add("Black Olives"); 
+toppings.add("Spinach"); 
+toppings.add("Eggplant"); 
+} 
+void cut() 
+{System.out.println("Cutting the pizza into square slices"); 
+}} 
+class DependentPizzaStore 
+{public Pizza createPizza(String style, String type) 
+{ Pizza pizza = null; 
+if (style.equals("NY")) 
+{if (type.equals("cheese")) 
+{pizza = new NYStyleCheesePizza(); 
+} 
+else if (type.equals("veggie")) 
+{pizza = new NYStyleVeggiePizza(); 
+} 
+else if (type.equals("clam")) 
+{pizza = new NYStyleClamPizza(); 
+} 
+else if (type.equals("pepperoni")) 
+{pizza = new NYStylePepperoniPizza(); 
+}} 
+else if (style.equals("Chicago")) 
+{if (type.equals("cheese")) 
+{pizza = new ChicagoStyleCheesePizza(); 
+} 
+else if (type.equals("veggie")) 
+{pizza = new ChicagoStyleVeggiePizza(); 
+} 
+else if (type.equals("clam")) 
+{pizza = new ChicagoStyleClamPizza(); 
+} 
+else if (type.equals("pepperoni")) 
+{pizza = new ChicagoStylePepperoniPizza(); 
+}} 
+else 
+{System.out.println("Error: invalid type of pizza"); 
+return null; 
+} 
+pizza.prepare(); 
+pizza.bake(); 
+pizza.cut(); 
+pizza.box(); 
+return pizza; 
+}} 
+class NYPizzaStore extends PizzaStore 
+{Pizza createPizza(String item) 
+{if (item.equals("cheese")) 
+{return new NYStyleCheesePizza(); 
+} 
+else if (item.equals("veggie")) 
+{return new NYStyleVeggiePizza(); 
+} 
+else if (item.equals("clam")) 
+{return new NYStyleClamPizza(); 
+} 
+else if (item.equals("pepperoni")) 
+{return new NYStylePepperoniPizza(); 
+} 
+else return null; 
+}} 
+class NYStyleCheesePizza extends Pizza 
+{public NYStyleCheesePizza() 
+{ 
+name = "NY Style Sauce and Cheese Pizza"; 
+dough = "Thin Crust Dough"; 
+sauce = "Marinara Sauce"; 
+toppings.add("Grated Reggiano Cheese"); 
+}} 
+class NYStyleClamPizza extends Pizza 
+{public NYStyleClamPizza() 
+{ 
+name = "NY Style Clam Pizza"; 
+dough = "Thin Crust Dough"; 
+sauce = "Marinara Sauce"; 
+toppings.add("Grated Reggiano Cheese"); 
+toppings.add("Fresh Clams from Long Island Sound"); 
+}} 
+class NYStylePepperoniPizza extends Pizza 
+{public NYStylePepperoniPizza() 
+{ 
+name = "NY Style Pepperoni Pizza"; 
+dough = "Thin Crust Dough"; 
+sauce = "Marinara Sauce"; 
+toppings.add("Grated Reggiano Cheese"); 
+toppings.add("Sliced Pepperoni"); 
+toppings.add("Garlic"); 
+toppings.add("Onion"); 
+toppings.add("Mushrooms"); 
+toppings.add("Red Pepper"); 
+}} 
+class NYStyleVeggiePizza extends Pizza 
+{public NYStyleVeggiePizza() 
+{ 
+name = "NY Style Veggie Pizza"; 
+dough = "Thin Crust Dough"; 
+sauce = "Marinara Sauce"; 
+toppings.add("Grated Reggiano Cheese"); 
+toppings.add("Garlic"); 
+toppings.add("Onion"); 
+toppings.add("Mushrooms"); 
+toppings.add("Red Pepper"); 
+}} 
+abstract class Pizza 
+{ 
+String name; 
+String dough; 
+String sauce; 
+ArrayList toppings = new ArrayList(); 
+void prepare() 
+{ 
+System.out.println("Preparing " + name); 
+System.out.println("Tossing dough..."); 
+System.out.println("Adding sauce..."); 
+System.out.println("Adding toppings: "); 
+for (int i = 0; i < toppings.size(); i++) 
+{System.out.println(" " + toppings.get(i)); 
+}} 
+void bake() 
+{System.out.println("Bake for 25 minutes at 350"); 
+} 
+void cut() 
+{System.out.println("Cutting the pizza into diagonal slices"); 
+} 
+void box() 
+{System.out.println("Place pizza in official PizzaStore box"); 
+} 
+public String getName() 
+{return name; 
+} 
+public String toString() 
+{StringBuffer display = new StringBuffer(); 
+display.append("---- " + name + " ----\n"); 
+display.append(dough + "\n"); 
+display.append(sauce + "\n"); 
+for (int i = 0; i < toppings.size(); i++) 
+{display.append((String )toppings.get(i) + "\n"); 
+} 
+return display.toString(); 
+}} 
+abstract class PizzaStore 
+{abstract Pizza createPizza(String item); 
+public Pizza orderPizza(String type) 
+{Pizza pizza = createPizza(type); 
+System.out.println("--- Making a " + pizza.getName() + " ---"); 
+pizza.prepare(); 
+pizza.bake(); 
+pizza.cut(); 
+pizza.box(); 
+return pizza; 
+}
+}
+
+
+
+
+
+public class slip4_19_30
+{public static void main(String[] args) 
+{ 
+PizzaStore nyStore = new NYPizzaStore(); 
+PizzaStore chicagoStore = new ChicagoPizzaStore(); 
+Pizza pizza = nyStore.orderPizza("cheese"); 
+System.out.println("Ethan ordered a " + pizza.getName() + "\n"); 
+pizza = chicagoStore.orderPizza("cheese"); 
+System.out.println("Joel ordered a " + pizza.getName() + "\n"); 
+pizza = nyStore.orderPizza("clam"); 
+System.out.println("Ethan ordered a " + pizza.getName() + "\n"); 
+pizza = chicagoStore.orderPizza("clam"); 
+System.out.println("Joel ordered a " + pizza.getName() + "\n"); 
+pizza = nyStore.orderPizza("pepperoni"); 
+System.out.println("Ethan ordered a " + pizza.getName() + "\n"); 
+pizza = chicagoStore.orderPizza("pepperoni"); 
+System.out.println("Joel ordered a " + pizza.getName() + "\n"); 
+pizza = nyStore.orderPizza("veggie"); 
+System.out.println("Ethan ordered a " + pizza.getName() + "\n"); 
+pizza = chicagoStore.orderPizza("veggie"); 
+System.out.println("Joel ordered a " + pizza.getName() + "\n"); 
+}}
+
+Q.2.	Write a python program to implement Naive Bayes.	[20 M]
+***sir code***
+#Naive Bayes
+import pandas as pd
+
+df=pd.read_csv("Titanic-Dataset.csv")
+df.head(1)
+
+df=df.drop(['PassengerId','Name','SibSp','Parch','Embarked','Cabin','Ticket'], axis='columns')
+df.head()
+
+from sklearn.preprocessing import LabelEncoder
+label = LabelEncoder()
+df['Gender'] = label.fit_transform(df['Gender'])
+df.head()
+
+input=df.drop(['Survived'],axis='columns')
+input.head()
+
+target=df['Survived']
+target.head()
+
+input.columns[input.isna().any()]
+input
+
+input.Age = input.Age.fillna(input.Age.mean())
+input
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(input,target,test_size=0.2)
+len(y_test)
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(x_train,y_train)
+
+model.score(x_test,y_test)
+
+x_test[:10]
+
+y_test[:10]
+
+model.predict(x_test[:10])
+
+Q.3	Design a Django application that adds web pages with views and templates.	[20 M]
+
+***sir code***
+root folder is que2 in 2 folders
+1) que2
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',include('myapp.urls')),
+]
+
+
+
+
+
+2) myapp (myapp is app folder)
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyappConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'myapp'
+
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.home,name='home'),
+    path('about/',views.about,name='about'),
+]
+
+
+views.py
+from django.shortcuts import render
+
+def home(request):
+    return render(request, "myapp/home.html")
+
+def about(request):
+    return render(request, "myapp/about.html")
+
+
+1) template (this folder present in myapp folder)
+1)myapp this folder in template folder
+home.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Home Page
+        </title>
+    </head>
+    <body>
+        <h1>
+            Welcome to the Home Page
+        </h1>
+    </body>
+</html>
+
+about.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            about Page
+        </title>
+    </head>
+    <body>
+        <h1>
+            About us
+        </h1>
+        <p>
+            this is the about page
+        </p>
+    </body>
+</html>
+
+
+
+***my code***
+root folder is assi2 in 2 folders
+1) assi2
+
+urls.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+from my_app.views import f1
+from my_app.views import f2
+from my_app.views import f3
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', index, name='index'),
+	path('first/',f1),
+	path('second/',f2),
+	path('third/',f3),
+]
+
+
+
+2) my_app (my_app is app folder) in my_app folder present templates folder
+
+
+apps.py
+from django.apps import AppConfig
+
+
+class MyAppConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'my_app'
+
+
+
+views.py
+
+from django.contrib import admin
+from django.urls import path
+from my_app.views import index
+from my_app.views import f1
+from my_app.views import f2
+from my_app.views import f3
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', index, name='index'),
+	path('first/',f1),
+	path('second/',f2),
+	path('third/',f3),
+]
+
+ 
+ 1)template ( in my_app folder present templates folder)
+
+ index.html
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>assi2</title>
+</head>
+<body>
+    <h1>
+        Design a Django application that adds web pages with views and templates.
+    </h1>
+    <a href="/first">first page</a>
+    <br>
+    <br>
+    <a href="/second">Second pages</a>
+    <br>
+    <br>
+    <a href="/third">Third page</a>
+</body>
+</html>
+
+a.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+b.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>second pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+c.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Third pages</title>
+</head>
+<body>
+    <h1>first page</h1>
+</body>
+</html>
+
+ 
+

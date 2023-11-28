@@ -1,0 +1,161 @@
+
+Q.1	Write a Java Program to implement an Adapter design pattern in mobile charger. Define two classes – Volt (to measure volts) and Socket (producing constant volts of 120V). Build an adapter that can produce 3 volts, 12 volts and default 120 volts. Implements Adapter pattern using Class Adapter	[20 M]
+
+public class AdapterEx
+
+{
+
+    public static void main(String[] args)
+    {
+        SocketAdapter socketAdapter = new SocketAdapterImpl();
+        Voltage voltage12 = socketAdapter.get12Voltage();
+        System.out.println(voltage12.getVolts());
+
+        Voltage voltage3 = socketAdapter.get3VVoltage();
+        System.out.println(voltage3.getVolts());
+
+        Voltage voltage120 = socketAdapter.get120Voltage();
+        System.out.println(voltage120.getVolts());
+    }
+}
+
+ class Socket
+{
+    public Voltage getVoltage()
+    {
+        return new Voltage(120); //In India 240 is the default voltage
+    }
+}
+
+ interface SocketAdapter
+{
+     public Voltage get120Voltage();
+     public Voltage get12Voltage();
+     public Voltage get3VVoltage();
+} 
+
+
+ class SocketAdapterImpl extends Socket implements SocketAdapter
+{
+
+    //Using Composition for adapter pattern
+    private Socket sock = new Socket();
+    private Voltage convertVolt(Voltage v, int i)
+    {
+        return new Voltage(v.getVolts() / i);
+    }
+    @Override
+    public Voltage get120Voltage()
+    {
+        return sock.getVoltage();
+    }
+    @Override
+    public Voltage get12Voltage()
+    {
+        Voltage v = sock.getVoltage();
+        return convertVolt(v, 20);
+    }
+    @Override
+    public Voltage get3VVoltage()
+    {
+        Voltage v = sock.getVoltage();
+        return convertVolt(v, 80);
+    }
+}
+
+
+ class Voltage
+{
+    private int voltage;
+    public Voltage(int v)
+    {
+        this.voltage = v;
+    }
+    public int getVolts()
+    {
+        return voltage;
+    }
+    public void setVolts(int voltage)
+    {
+        this.voltage = voltage;
+    }
+}
+
+Q.2. Write a Python program to prepare Scatter Plot for Iris Dataset	[20 M]
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+iris_data = pd.read_csv("iris2.csv")
+iris_data
+
+versicolor = iris_data[iris_data.variety == "Versicolor"]
+setosa = iris_data[iris_data.variety =="Setosa"]
+virginica = iris_data[iris_data.variety == "Virginica"]
+
+fig, ax = plt.subplots()
+fig.set_size_inches(8, 8)
+
+points = ax.scatter(versicolor["petal.length"], versicolor["petal.width"], label="Versicolor")
+
+points.set_facecolor("green")
+
+ax.scatter(setosa["petal.length"], setosa["petal.width"], label="Setosa", marker="x", facecolor="blue")
+ax.scatter(virginica["petal.length"], virginica["petal.width"], label="Virginica", marker="s", facecolor="red")
+
+ax.set_xlabel("Petal Length (cm)")
+ax.set_ylabel("Petal Width (cm)")
+ax.set_title("Iris Petal Sizes")
+ax.legend()
+
+
+
+
+Q.3	Using node js create a User Login System.	[20 M]
+
+*** madam code***
+
+html-
+<html>
+<head>
+<title>User login page</title>
+<head>
+    <script>
+          function f(){
+                var validRegex =/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;
+                var email=document.getElementById("email").value;
+                if(!validRegex.test(email))
+                    alert("Invalid Email!");
+                 else
+                    alert("submitted succesfully");
+                return false;
+         }
+    </script>
+</head>
+<body>
+    <form name="login" onsubmit="f()">
+    <h1>Login here</h1>
+    email id:<input type="text" id="email"/><br><br>
+    password:<input type="password" id="password"><br><br>
+    <input type="submit" id="submit" value="submit">
+    </form>
+</body>
+</html>
+
+javascript-
+var http=require('http');
+http.createServer(function(req,resp){
+    var fs=require("fs");
+    resp.writeHead(200,{'content-type':'text/html'});
+     var content= fs.readFileSync("login.html");
+         if(content){
+       
+         resp.write(content);
+         }
+         else{
+            resp.write("404 error");
+         }
+        
+    resp.end();
+}).listen(6006);
+

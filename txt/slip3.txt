@@ -1,0 +1,496 @@
+Q.1	Write a JAVA Program to implement built-in support (java.util.Observable) Weather station with	members temperature, humidity, pressure and methods mesurmentsChanged(), setMesurment(), getTemperature(), getHumidity(), getPressure()		[20 M]
+
+import java.util.*;
+
+interface Observer {
+    public void update(float temp, float humidity, float pressure);
+}
+
+interface DisplayElement {
+    public void display();
+}
+
+interface Subject {
+    public void registerObserver(Observer o);
+
+    public void removeObserver(Observer o);
+
+    public void notifyObservers();
+}
+
+class WeatherData implements Subject {
+    private ArrayList<Observer> observers;
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherData() {
+        observers = new ArrayList<>();
+    }
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        int i = observers.indexOf(o);
+        if (i >= 0) {
+            observers.remove(i);
+        }
+    }
+
+    public void notifyObservers() {
+        for (int i = 0; i < observers.size(); i++) {
+            Observer observer = (Observer) observers.get(i);
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+
+    public void measurementsChanged() {
+        notifyObservers();
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+}
+
+class ForecastDisplay implements Observer, DisplayElement {
+    private float currentPressure = 29.92f;
+    private float lastPressure;
+    private WeatherData weatherData;
+
+    public ForecastDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temp, float humidity, float pressure) {
+        lastPressure = currentPressure;
+        currentPressure = pressure;
+
+        display();
+    }
+
+    public void display() {
+        System.out.print("Forecast: ");
+        if (currentPressure > lastPressure) {
+            System.out.println("Improving weather on the way!");
+        } else if (currentPressure == lastPressure) {
+            System.out.println("More of the same");
+        } else if (currentPressure < lastPressure) {
+            System.out.println("Watch out for cooler weather, rainy weather");
+        }
+    }
+}
+
+class HeatIndexDisplay implements Observer, DisplayElement {
+    float heatIndex = 0.0f;
+    private WeatherData weatherData;
+
+    public HeatIndexDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float t, float rh, float pressure) {
+        heatIndex = computeHeatIndex(t, rh);
+        display();
+    }
+
+    private float computeHeatIndex(float t, float rh) {
+        float index = (float) ((16.923 + (0.185212 * t) + (5.37941 * rh) - (0.100254 * t * rh)
+                + (0.00941695 * (t * t)) + (0.00728898 * (rh * rh))
+                + (0.000345372 * (t * t * rh)) - (0.000814971 * (t * rh * rh)) +
+                (0.0000102102 * (t * t * rh * rh)) - (0.000038646 * (t * t * t)) + (0.0000291583 *
+                        (rh * rh * rh))
+                + (0.00000142721 * (t * t * t * rh)) +
+                (0.000000197483 * (t * rh * rh * rh)) - (0.0000000218429 * (t * t * t * rh * rh)) +
+                0.000000000843296 * (t * t * rh * rh * rh)) -
+                (0.0000000000481975 * (t * t * t * rh * rh * rh)));
+        return index;
+    }
+
+    public void display() {
+        System.out.println("Heat index is " + heatIndex);
+    }
+}
+
+class StatisticsDisplay implements Observer, DisplayElement {
+    private float maxTemp = 0.0f;
+    private float minTemp = 200;
+    private float tempSum = 0.0f;
+    private int numReadings;
+    private WeatherData weatherData;
+
+    public StatisticsDisplay(WeatherData weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temp, float humidity, float pressure) {
+        tempSum += temp;
+        numReadings++;
+
+        if (temp > maxTemp) {
+            maxTemp = temp;
+        }
+
+        if (temp < minTemp) {
+            minTemp = temp;
+        }
+
+        display();
+    }
+
+    public void display() {
+        System.out.println("Avgerage/Maximum/Minimum temperature = " + (tempSum / numReadings)
+                + "/" + maxTemp + "/" + minTemp);
+    }
+}
+
+class CurrentConditionsDisplay implements Observer, DisplayElement {
+    private float temperature;
+    private float humidity;
+    private Subject weatherData;
+
+    public CurrentConditionsDisplay(Subject weatherData) {
+        this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+
+    public void update(float temperature, float humidity, float pressure) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        display();
+    }
+
+    public void display() {
+        System.out.println("Current conditions: " + temperature
+                + "F degrees and " + humidity + "% humidity");
+    }
+}
+//weather.java main file
+class  slip3_18_28{
+
+    public static void main(String[] args) {
+        WeatherData weatherData = new WeatherData();
+
+        CurrentConditionsDisplay currentDisplay = new CurrentConditionsDisplay(weatherData);
+        StatisticsDisplay statisticsDisplay = new StatisticsDisplay(weatherData);
+        ForecastDisplay forecastDisplay = new ForecastDisplay(weatherData);
+
+        weatherData.setMeasurements(70, 55, 40.4f);
+        weatherData.setMeasurements(72, 60, 39.2f);
+        weatherData.setMeasurements(68, 80, 39.2f);
+    }
+}
+
+
+Q. 2. Write a python program to make Categorical values in numeric format for a given dataset	[20 M]
+***sir code **
+from sklearn.preprocessing import LabelEncoder
+import pandas as pd
+
+df = pd.read_csv("forestfires.csv")
+df.sample(5)
+
+label_encoder = LabelEncoder()
+df["Numneric_month"] = label_encoder.fit_transform(df["month"])
+df["Numneric_day"] = label_encoder.fit_transform(df["day"])
+df.sample(5)
+
+df.to_csv('encoded_dataset.csv', index=False)
+
+
+****my code***
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+
+df = pd.read_csv('jamesbond.csv')
+ 
+#printing DataFrame
+df
+
+
+# Creating a instance of label Encoder.
+le = LabelEncoder()
+ 
+# Using .fit_transform function to fit label
+# encoder and return encoded label
+label = le.fit_transform(df['show'])
+ 
+# printing label
+label
+
+df.drop("show", axis=1, inplace=True)
+ 
+# Appending the array to our dataFrame
+# with column name 'Purchased'
+df["show"] = label
+ 
+# printing Dataframe
+df
+
+
+Q. 3. Create an HTML form for Login and write a JavaScript to validate email ID using Regular Expression.
+***madam code***
+<html>
+<head>
+  <script>
+    function validateform(){  
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("psw").value;
+      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)))
+          alert("You have entered an invalid email address!");
+    }
+    </script>
+</head>
+<body>
+  <form name="myform" onsubmit="return validateform()">
+      <h1>Please fill in this form to Login.</h1>
+     
+      Email :
+      <input type="text" autocomplete="off" placeholder="Enter Email" name="email" id="email" required><br>
+      Password :
+      <input type="password" autocomplete="off" placeholder="Enter Password" name="psw" id="psw" required><br>
+      <button type="submit" class="registerbtn">Register</button>
+  </form>
+</body>
+</html>
+
+
+***mycode ***
+
+assi3.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="assi3.css">
+
+    <title>Java Script Demos</title>
+    <script language="javascript">
+        var flag;
+        function ValidationFrom(frm) {
+
+    
+
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (txtEmail.value.match(mailformat)) {
+                alert("Valid email address!");
+                document.form1.text1.focus();
+                return true;
+            }
+            else {
+                alert("You have entered an invalid email address!");
+                document.form1.text1.focus();
+                return false;
+            }
+
+
+        }
+
+
+var myInput = document.getElementById("psw");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
+
+console.log(myInput);
+
+// When the user clicks on the password field, show the message box
+myInput.onfocus = function() {
+  document.getElementById("message").style.display = "block";
+}
+
+// When the user clicks outside of the password field, hide the message box
+myInput.onblur = function() {
+  document.getElementById("message").style.display = "none";
+}
+
+// When the user starts to type something inside the password field
+myInput.onkeydown = function() {
+
+  
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  if(myInput.value.match(lowerCaseLetters)) {
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+   
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
+}
+
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  if(myInput.value.match(upperCaseLetters)) {
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
+  }
+
+  // Validate numbers
+  var numbers = /[0-9]/g;
+  if(myInput.value.match(numbers)) {
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
+  }
+
+  // Validate length
+  if(myInput.value.length >= 8) {
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
+  }
+}
+      
+    </script>
+</head>
+
+<body>
+ 
+    <form name="frm1" id="frm1" onsubmit="return ValidationFrom(this)">
+        <table align="center" class="tb1" cellspacing="5" cellpadding="5">
+
+            <caption> REGISTRATION FORM</caption>
+            <thead>
+
+            </thead>
+
+            <tbody>
+
+                 <tr>
+                    <td> Email</td>
+                    <td> <input type="text" id="txtEmail" size="30" class="brd"> </td>
+                 
+                </tr>
+                <tr>
+                    <td> Password</td>
+                    <td> <input type="password" id="psw" size="30" class="brd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required> </td>
+                    
+                </tr> 
+
+
+
+
+
+
+
+
+                <td> <input type="submit" id="btnsubmit" value="Submit" class="btn" > </td>
+
+
+
+
+
+
+                
+            </tbody>
+          
+        </table>
+
+
+      
+
+    </form>
+    <div id="message">
+      <h3>Password must contain the following:</h3>
+      <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+      <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+      <p id="number" class="invalid">A <b>number</b></p>
+      <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+    </div>
+
+   
+</body>
+
+</html>
+
+assi3.css
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  
+}
+
+.container {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+ #message{
+
+  background: #f0f4f7;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  /* content: "&#10004;"; */
+}
+
+.invalid {
+  color: rgb(255, 0, 0);
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  /* content: "&#10006;"; */
+}
